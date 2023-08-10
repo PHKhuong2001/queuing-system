@@ -1,0 +1,33 @@
+.equipment-wrapper {
+  width: 1000px;
+  border-radius: 12px;
+  padding: 16px 10px 24px 24px;
+  margin: 10px 2rem 0 2rem;
+  background-color: #ffffff;
+  &-title {
+    font-size: 1.2rem !important;
+    margin: 0;
+    color: #ff7506 !important;
+    font-weight: 700;
+  }
+  .equipment-create-group {
+    display: flex;
+    flex-direction: column;
+    .equipment-input-label {
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+  }
+  .equipment-select-create {
+    .ant-select-selector {
+      height: 38px;
+      padding: 3px 11px;
+      input {
+        height: 100% !important;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

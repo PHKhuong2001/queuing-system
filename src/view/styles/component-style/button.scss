@@ -1,0 +1,64 @@
+.button-add {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 4.5rem;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 1rem;
+  white-space: normal;
+  padding: 7px 0;
+  background-color: #fff2e7 !important;
+  color: #ff7506 !important;
+}
+
+:where(.css-dev-only-do-not-override-fpg3f5).ant-btn-default:not(:disabled):not(
+    .ant-btn-disabled
+  ):hover {
+  border-color: transparent;
+}
+
+:where(.css-dev-only-do-not-override-fpg3f5).ant-btn:not(.ant-btn-icon-only)
+  > .ant-btn-icon:not(:last-child) {
+  margin-inline-end: 0;
+}
+
+.button-notify {
+  min-width: 34px !important;
+  width: 34px;
+  height: 34px;
+  padding: 7px 15px;
+  border: none;
+  background-color: #fff2e7;
+}
+
+.button-cancel {
+  color: #ff9138;
+  height: 44px;
+  border-color: #ff9138;
+  background-color: #fff2e7;
+  min-width: 147px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    border-color: #ff9138 !important;
+    color: #ff9138 !important;
+  }
+}
+
+.button-continue {
+  color: #ffffff;
+  height: 44px;
+  border-color: #ff9138;
+  background-color: #ff9138;
+  min-width: 147px;
+  font-size: 1rem;
+  &:hover {
+    color: #ffffff !important;
+  }
+}

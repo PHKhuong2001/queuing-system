@@ -1,0 +1,18 @@
+.information-wrapper {
+  width: 1020px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  margin: 80px 2rem 0 2rem;
+  padding: 50px 15px;
+  .rese-col-information {
+    line-height: 0;
+  }
+  .input-information {
+    height: 38px;
+    margin-top: 5px;
+  }
+  .label-input {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}

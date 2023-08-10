@@ -1,0 +1,9 @@
+.layout-auth {
+  height: 100vh;
+  background: #f9f6f4;
+  overflow: hidden;
+  &-login {
+    min-width: 29rem !important;
+    // background-color: #f6f6f6 !important;
+  }
+}

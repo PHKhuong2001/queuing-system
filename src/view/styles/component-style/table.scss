@@ -1,0 +1,31 @@
+.odd-row {
+  background-color: #fff2e7 !important;
+}
+
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th:not(:last-child):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ):not([colspan])::before {
+  width: 0 !important;
+}
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th {
+  background-color: #ff9138 !important;
+  color: #ffffff;
+}
+
+:where(.css-dev-only-do-not-override-fpg3f5).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th {
+  padding: 8px 8px !important;
+  text-align: center;
+}
+
+.table {
+  height: 100%;
+}

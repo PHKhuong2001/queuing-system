@@ -1,0 +1,23 @@
+@import "../varible";
+.layout-default {
+  height: 100vh;
+  background: #f9f6f4;
+  // overflow: hidden;
+  .layout-default-sider {
+    background-color: #ffffff;
+    .ant-layout-sider-children {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      // justify-content: space-between;
+    }
+  }
+  .layout-default-content {
+    background-color: #f6f6f6;
+  }
+}
+
+.title {
+  color: $color-text !important;
+  font-size: 1.6rem !important;
+}

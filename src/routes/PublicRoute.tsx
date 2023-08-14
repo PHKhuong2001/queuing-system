@@ -14,6 +14,12 @@ import ForgotPassword from "@/view/Auth/ForgotPassword";
 import ChangePassword from "@/view/Auth/ChangePassword";
 import EquipmentCreate from "@/view/Page/Equipment/EquipmentCRUD/CreateEquipment";
 import EquipmentDetail from "@/view/Page/Equipment/EquipmentCRUD/DetailEquipment";
+import EquipmentUpdate from "@/view/Page/Equipment/EquipmentCRUD/UpdateEquipment";
+import ServiceCreate from "@/view/Page/ServicePage/ServiceCRUD/CreateService";
+import ServiceDetail from "@/view/Page/ServicePage/ServiceCRUD/DetailService";
+import ServiceUpdate from "@/view/Page/ServicePage/ServiceCRUD/UpdateService";
+import ProgressionDetail from "@/view/Page/ProgressionPage/ProgressionCRUD/DetailProgression";
+import ProgressionCreate from "@/view/Page/ProgressionPage/ProgressionCRUD/CreateProgression";
 
 interface PublicRouteType {
   path: string;
@@ -54,12 +60,32 @@ const publicRoute: PublicRouteType[] = [
   },
   {
     path: routesConfig.equipmentUpdate,
-    component: <EquipmentCreate></EquipmentCreate>,
+    component: <EquipmentUpdate></EquipmentUpdate>,
   },
   { path: routesConfig.service, component: <ServicePage></ServicePage> },
   {
+    path: routesConfig.serviceCreate,
+    component: <ServiceCreate></ServiceCreate>,
+  },
+  {
+    path: routesConfig.serviceDetail,
+    component: <ServiceDetail></ServiceDetail>,
+  },
+  {
+    path: routesConfig.serviceUpdate,
+    component: <ServiceUpdate></ServiceUpdate>,
+  },
+  {
     path: routesConfig.progression,
     component: <ProgressionPage></ProgressionPage>,
+  },
+  {
+    path: routesConfig.progressionDetail,
+    component: <ProgressionDetail></ProgressionDetail>,
+  },
+  {
+    path: routesConfig.progressionCreate,
+    component: <ProgressionCreate></ProgressionCreate>,
   },
   { path: routesConfig.report, component: <ReportPage></ReportPage> },
 ];

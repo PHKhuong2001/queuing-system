@@ -16,9 +16,14 @@ const routesConfig = {
 
   // Route Dịch vụ
   service: "/service",
+  serviceCreate: "/service/create",
+  serviceUpdate: "/service/update/:id",
+  serviceDetail: "/service/:id",
 
   // Route Cấp số
   progression: "/progression",
+  progressionDetail: "/progression/:id",
+  progressionCreate: "/progression/create",
 
   // Route báo cáo
   report: "/report",

@@ -31,10 +31,10 @@ function SideBar() {
           <Row key={index}>
             <Col span={24}>
               <Link
-                to={menu.path}
+                to={menu.path || ""}
                 onMouseEnter={() => {
                   setIconHover(true);
-                  setIconNameHover(menu.path);
+                  setIconNameHover(menu.path || "");
                 }}
                 onMouseLeave={() => {
                   setIconHover(false);

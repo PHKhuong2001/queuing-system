@@ -1,7 +1,8 @@
 import { AddButtonCustom, TableComponent } from "@/Shared/components";
 import routesConfig from "@/config/routes";
 import { Header } from "@/layouts";
-import { Col, Row, Select, Typography } from "antd";
+import { Col, DatePicker, Row, Select, Typography } from "antd";
+import { dataListService } from "./ServiceColumn";
 function ServicePage() {
   const { Title, Text } = Typography;
   return (
@@ -29,6 +30,7 @@ function ServicePage() {
           <Select
             defaultValue="Tất cả"
             style={{ width: "90%" }}
+            className="equipment-select"
             // onChange={handleChangeSelectStatus}
             options={[
               { value: "all", label: "Tất cả" },
@@ -45,17 +47,23 @@ function ServicePage() {
             justifyContent: "center",
           }}
         >
-          <Text>Trạng thái kết nối</Text>
-          <Select
-            defaultValue="Tất cả"
-            style={{ width: "70%" }}
-            // onChange={handleChangeSelectStatus}
-            options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
-            ]}
-          />
+          <Row>
+            <Text>Chọn thời gian</Text>
+          </Row>
+          <Row style={{ display: "flex" }}>
+            <Col span={10}>
+              <DatePicker
+                style={{ width: "90%", height: 38 }}
+                // onChange={handleChangeSelectStatus}
+              />
+            </Col>
+            <Col span={10}>
+              <DatePicker
+                style={{ width: "90%", height: 38 }}
+                // onChange={handleChangeSelectStatus}
+              />
+            </Col>
+          </Row>
         </Col>
         <Col
           span={7}
@@ -87,11 +95,11 @@ function ServicePage() {
         }}
       >
         <AddButtonCustom
-          nameAdd="Thêm thiết bị"
-          href={routesConfig.equipment}
+          nameAdd="Thêm Dịch vụ"
+          href={routesConfig.serviceCreate}
         />
         <Col span={24}>
-          <TableComponent data={[]} />
+          <TableComponent data={dataListService} />
         </Col>
       </Row>
     </Col>

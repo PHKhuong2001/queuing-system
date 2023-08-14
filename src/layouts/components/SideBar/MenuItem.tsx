@@ -49,7 +49,20 @@ const MenuItem: ISideBarItem[] = [
     iconActive: <DashboardIcon fillColor="white" />,
     iconHover: <DashboardIcon fillColor="#ff7506" />,
     name: "Cài đặt hệ thống",
-    path: routesConfig.systemInstallation,
+    menu: [
+      {
+        name: "",
+        path: "",
+      },
+      {
+        name: "",
+        path: "",
+      },
+      {
+        name: "",
+        path: "",
+      },
+    ],
   },
 ];
 export default MenuItem;

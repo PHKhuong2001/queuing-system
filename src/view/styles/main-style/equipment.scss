@@ -31,3 +31,15 @@
     }
   }
 }
+
+.equipment-select {
+  .ant-select-selector {
+    height: 38px !important;
+    padding: 3px 11px !important;
+    input {
+      height: 100% !important;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

@@ -2,9 +2,8 @@ import { AddButtonCustom, TableComponent } from "@/Shared/components";
 import routesConfig from "@/config/routes";
 import { Header } from "@/layouts";
 import { Col, Row, Select, Typography } from "antd";
-import { dataListService } from "./ProgressionColumn";
-function ProgressionPage() {
-  const { Title, Text } = Typography;
+function AccountManagementPage() {
+  const { Text, Title } = Typography;
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -14,10 +13,12 @@ function ProgressionPage() {
       </Row>
       <Row style={{ paddingLeft: "2rem" }}>
         <Col>
-          <Title className="title">Quản lý cấp số</Title>
+          <Title className="title">Danh sách tài khoản</Title>
         </Col>
       </Row>
-      <Row style={{ paddingLeft: "2rem", paddingRight: "5rem" }}>
+      <Row
+        style={{ paddingLeft: "2rem", paddingRight: "5rem", marginTop: "15px" }}
+      >
         <Col
           span={7}
           style={{
@@ -88,15 +89,15 @@ function ProgressionPage() {
         }}
       >
         <AddButtonCustom
-          nameAdd="Cấp số mới"
-          href={routesConfig.progressionCreate}
+          nameAdd="Thêm thiết bị"
+          href={routesConfig.equipment}
         />
         <Col span={24}>
-          <TableComponent data={dataListService} />
+          <TableComponent data={[]} />
         </Col>
       </Row>
     </Col>
   );
 }
 
-export default ProgressionPage;
+export default AccountManagementPage;

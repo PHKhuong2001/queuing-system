@@ -1,26 +1,38 @@
 import { AddButtonCustom, TableComponent } from "@/Shared/components";
 import routesConfig from "@/config/routes";
 import { Header } from "@/layouts";
-import { Col, Row, Select, Typography } from "antd";
+import { Col, Input, Row, Select, Typography } from "antd";
 import { useAppDispatch } from "@/app/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAllEquipment } from "@/features/equipment/equipmentSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-export const status = [
-  { value: "Tất cả", label: "Tất cả" },
-  { value: "Hoạt động", label: "Hoạt động" },
-  { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
-];
 
 function Equipment() {
   const { Title, Text } = Typography;
   const equipmentList = useSelector((state: RootState) => state.equipment.data);
   const dispatch = useAppDispatch();
-
+  const [activeStatus, setActiveStatus] = useState<string>("");
+  const [connectStatus, setConnectStatus] = useState<string>("");
   useEffect(() => {
-    dispatch(getAllEquipment());
-  }, [dispatch]);
+    dispatch(getAllEquipment({ active: activeStatus, connect: connectStatus }));
+  }, [dispatch, activeStatus, connectStatus]);
+
+  const handlerSelectActive = (e: string) => {
+    if (e === "Tất cả") {
+      setActiveStatus("");
+    } else {
+      setActiveStatus(e);
+    }
+  };
+
+  const handlerSelectConnect = (e: string) => {
+    if (e === "Tất cả") {
+      setConnectStatus("");
+    } else {
+      setConnectStatus(e);
+    }
+  };
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -46,11 +58,12 @@ function Equipment() {
           <Select
             defaultValue="Tất cả"
             style={{ width: "90%" }}
-            // onChange={handleChangeSelectStatus}
+            className="equipment-select"
+            onChange={handlerSelectActive}
             options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
+              { value: "Tất cả", label: "Tất cả" },
+              { value: "Hoạt động", label: "Hoạt động" },
+              { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
             ]}
           />
         </Col>
@@ -66,8 +79,13 @@ function Equipment() {
           <Select
             defaultValue="Tất cả"
             style={{ width: "70%" }}
-            // onChange={handleChangeSelectStatus}
-            options={status}
+            onChange={handlerSelectConnect}
+            className="equipment-select"
+            options={[
+              { value: "Tất cả", label: "Tất cả" },
+              { value: "Kết nối", label: "Kết nối" },
+              { value: "Mất kết nối", label: "Mất kết nối" },
+            ]}
           />
         </Col>
         <Col
@@ -79,15 +97,9 @@ function Equipment() {
           }}
         >
           <Text>Từ khoá</Text>
-          <Select
-            defaultValue="Tất cả"
+          <Input.Search
             style={{ width: "100%" }}
             // onChange={handleChangeSelectStatus}
-            options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
-            ]}
           />
         </Col>
       </Row>

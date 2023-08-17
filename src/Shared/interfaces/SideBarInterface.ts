@@ -6,7 +6,8 @@ export interface ISideBarItem {
   iconHover?: ComponentState;
   name?: string;
   path?: string;
-  menu?: MenuItem[];
+  hoverMenu?: MenuItem[];
+  route?: string[];
 }
 
 interface MenuItem {

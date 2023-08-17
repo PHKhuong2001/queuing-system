@@ -20,6 +20,9 @@ import ServiceDetail from "@/view/Page/ServicePage/ServiceCRUD/DetailService";
 import ServiceUpdate from "@/view/Page/ServicePage/ServiceCRUD/UpdateService";
 import ProgressionDetail from "@/view/Page/ProgressionPage/ProgressionCRUD/DetailProgression";
 import ProgressionCreate from "@/view/Page/ProgressionPage/ProgressionCRUD/CreateProgression";
+import RoleManagementPage from "@/view/Page/RoleManagement";
+import AccountManagementPage from "@/view/Page/AccountManagement";
+import RoleUpdate from "@/view/Page/RoleManagement/RoleCRUD/UpdateRole";
 
 interface PublicRouteType {
   path: string;
@@ -88,6 +91,22 @@ const publicRoute: PublicRouteType[] = [
     component: <ProgressionCreate></ProgressionCreate>,
   },
   { path: routesConfig.report, component: <ReportPage></ReportPage> },
+  {
+    path: routesConfig.roleManagement,
+    component: <RoleManagementPage></RoleManagementPage>,
+  },
+  {
+    path: routesConfig.roleUpdate,
+    component: <RoleUpdate></RoleUpdate>,
+  },
+  {
+    path: routesConfig.accountManagement,
+    component: <AccountManagementPage></AccountManagementPage>,
+  },
+  {
+    path: routesConfig.userLogs,
+    component: <AccountManagementPage></AccountManagementPage>,
+  },
 ];
 
 export default publicRoute;

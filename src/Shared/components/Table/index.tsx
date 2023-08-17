@@ -1,6 +1,8 @@
 import routesConfig from "@/config/routes";
 import { columnsOffEquipment } from "@/view/Page/Equipment/EquipmentColumn";
 import { columnsOffProgression } from "@/view/Page/ProgressionPage/ProgressionColumn";
+import { columnsOffReport } from "@/view/Page/ReportPage/ReportColumn";
+import { columnsOffRole } from "@/view/Page/RoleManagement/RoleColumn";
 import { columnsOffService } from "@/view/Page/ServicePage/ServiceColumn";
 import { Table, Pagination } from "antd";
 import { useEffect, useState } from "react";
@@ -9,9 +11,11 @@ import { useLocation } from "react-router-dom";
 const pageSizeOptions = ["5", "6", "7", "8", "10", "20"]; // Các tùy chọn số lượng hàng trên mỗi trang
 interface TableProps {
   data: any[];
+  height?: string;
+  width?: string;
 }
 
-const TableComponent = ({ data }: TableProps) => {
+const TableComponent = ({ data, height = "400px", width }: TableProps) => {
   const [pageSize, setPageSize] = useState<any>(
     parseInt(pageSizeOptions[1], 10)
   );
@@ -40,6 +44,10 @@ const TableComponent = ({ data }: TableProps) => {
         return columnsOffService;
       case routesConfig.progression:
         return columnsOffProgression;
+      case routesConfig.report:
+        return columnsOffReport;
+      case routesConfig.roleManagement:
+        return columnsOffRole;
       default:
         return;
     }
@@ -57,7 +65,7 @@ const TableComponent = ({ data }: TableProps) => {
         pagination={false}
         bordered
         rowClassName={rowClassName}
-        style={{ height: "400px", maxHeight: "400px" }}
+        style={{ height: height, maxHeight: height, width: width }}
         className="table"
       />
       <Pagination

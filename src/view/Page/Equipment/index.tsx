@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getAllEquipment } from "@/features/equipment/equipmentSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
+import { DropdownIcon } from "@/Shared/components/icon";
 
 function Equipment() {
   const { Title, Text } = Typography;
@@ -59,6 +60,7 @@ function Equipment() {
             defaultValue="Tất cả"
             style={{ width: "90%" }}
             className="equipment-select"
+            suffixIcon={<DropdownIcon />}
             onChange={handlerSelectActive}
             options={[
               { value: "Tất cả", label: "Tất cả" },
@@ -80,6 +82,7 @@ function Equipment() {
             defaultValue="Tất cả"
             style={{ width: "70%" }}
             onChange={handlerSelectConnect}
+            suffixIcon={<DropdownIcon />}
             className="equipment-select"
             options={[
               { value: "Tất cả", label: "Tất cả" },
@@ -98,6 +101,7 @@ function Equipment() {
         >
           <Text>Từ khoá</Text>
           <Input.Search
+            className="search-antd"
             style={{ width: "100%" }}
             // onChange={handleChangeSelectStatus}
           />

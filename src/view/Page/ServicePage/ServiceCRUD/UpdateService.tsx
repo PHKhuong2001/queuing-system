@@ -1,51 +1,44 @@
-import { IEquipment } from "@/Shared/interfaces/EquipmentInterface";
+import { IService } from "@/Shared/interfaces/ServiceInterface";
 import { useAppDispatch } from "@/app/hooks";
+import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
-import { addNewEquipment } from "@/features/equipment/equipmentSlice";
+import { findServiceUpdate } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
-import { Button, Col, Form, Input, Row, Select, Typography } from "antd";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button, Checkbox, Col, Form, Input, Row, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 export const status = [
   { value: "Tất cả", label: "Tất cả" },
   { value: "Hoạt động", label: "Hoạt động" },
   { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
 ];
-
-const formCreate: IEquipment = {
-  maThietBi: "",
-  loaiThietBi: "",
-  tenThietBi: "",
-  dangNhap: "",
-  ip: "",
-  password: "",
-  dichVuSuDung: "",
+const formUpdate: IService = {
+  id: "",
+  name: "",
+  describe: "",
+  from: "",
+  to: "",
+  createdAt: "",
 };
 
 function ServiceUpdate() {
+  const dataServiceUpdate = useSelector(
+    (state: RootState) => state.service.dataServiceDetail
+  );
   const { Title, Text } = Typography;
+  const { id } = useParams();
+  const [formNewUpdate, setFormNewUpdate] = useState(formUpdate);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const [formValue, setFormCreateValue] = useState<IEquipment>(formCreate);
-  const handlerSubmitCreate = () => {
-    // if (
-    //   formValue.maThietBi &&
-    //   formValue.loaiThietBi &&
-    //   formValue.tenThietBi &&
-    //   formValue.dangNhap &&
-    //   formValue.ip &&
-    //   formValue.password &&
-    //   formValue.dichVuSuDung
-    // ) {
-    //   dispatch(addNewEquipment(formValue));
-    //   setFormCreateValue(formCreate);
-    //   navigate(routesConfig.equipment);
-    // }
-    // return false;
-  };
+  useEffect(() => {
+    dispatch(findServiceUpdate(id || ""));
+    setFormNewUpdate(dataServiceUpdate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, id]);
+  const handlerSubmitUpdate = () => {};
   return (
-    <Form onFinish={handlerSubmitCreate}>
+    <Form onFinish={handlerSubmitUpdate}>
       <Col span={24} style={{ height: "100%" }}>
         <Row>
           <Col span={24}>
@@ -61,7 +54,7 @@ function ServiceUpdate() {
           <Col span={24}>
             <Row>
               <Title className="equipment-wrapper-title">
-                Chi tiết dịch vụ
+                Thông tin dịch vụ
               </Title>
             </Row>
             <Row
@@ -90,11 +83,11 @@ function ServiceUpdate() {
                     <Input
                       style={{ width: "95%", height: 38 }}
                       placeholder="Nhập mã dịch vụ"
-                      // value={formValue.maThietBi}
+                      value={formNewUpdate.id}
                       onChange={(e) =>
-                        setFormCreateValue((prev) => ({
+                        setFormNewUpdate((prev) => ({
                           ...prev,
-                          maThietBi: e.target.value,
+                          id: e.target.value,
                         }))
                       }
                     />
@@ -111,16 +104,16 @@ function ServiceUpdate() {
                       style={{ marginBottom: "5px" }}
                       className="equipment-input-label"
                     >
-                      Mã thiết bị *
+                      Tên dịch vụ *
                     </Text>
                     <Input
                       style={{ width: "95%", height: 38 }}
-                      placeholder="Nhập mã thiết bị"
-                      value={formValue.maThietBi}
+                      placeholder="Nhập tên dịch vụ"
+                      value={formNewUpdate.name}
                       onChange={(e) =>
-                        setFormCreateValue((prev) => ({
+                        setFormNewUpdate((prev) => ({
                           ...prev,
-                          maThietBi: e.target.value,
+                          name: e.target.value,
                         }))
                       }
                     />
@@ -128,23 +121,57 @@ function ServiceUpdate() {
                 </Row>
               </Col>
               <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Loại thiết bị *</Text>
+                <Text className="equipment-input-label">Mô tả *</Text>
                 <Input.TextArea
                   style={{ width: "100%", height: 132 }}
                   placeholder="Nhập mô tả"
-                  value={formValue.maThietBi}
+                  value={formNewUpdate.describe}
                   onChange={(e) =>
-                    setFormCreateValue((prev) => ({
+                    setFormNewUpdate((prev) => ({
                       ...prev,
-                      maThietBi: e.target.value,
+                      describe: e.target.value,
                     }))
                   }
                 />
               </Col>
             </Row>
 
-            <Row style={{ marginTop: 15 }}>
+            <Row style={{ marginTop: 20 }}>
               <Title className="equipment-wrapper-title">Quy tắc cấp số</Title>
+            </Row>
+            <Row style={{ marginTop: 5 }}>
+              <Col span={4} style={{ display: "flex", alignItems: "center" }}>
+                <Checkbox>Tăng tự động từ:</Checkbox>
+              </Col>
+              <Col
+                span={4}
+                style={{ display: "flex", alignItems: "center", gap: 10 }}
+              >
+                <Input style={{ width: "35%" }} />
+                <Text>đến</Text>
+                <Input style={{ width: "35%" }} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col span={4} style={{ display: "flex", alignItems: "center" }}>
+                <Checkbox>Prefix:</Checkbox>
+              </Col>
+              <Col span={4} style={{ display: "flex", alignItems: "center" }}>
+                <Input style={{ width: "35%" }} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col span={4} style={{ display: "flex", alignItems: "center" }}>
+                <Checkbox>Surfix:</Checkbox>
+              </Col>
+              <Col span={4} style={{ display: "flex", alignItems: "center" }}>
+                <Input style={{ width: "35%" }} />
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col style={{ display: "flex", alignItems: "center" }}>
+                <Checkbox>Reset mỗi ngày</Checkbox>
+              </Col>
             </Row>
           </Col>
         </Row>
@@ -168,7 +195,7 @@ function ServiceUpdate() {
               Huỷ bỏ
             </Button>
             <Button className="button-continue" htmlType="submit">
-              Thêm dịch vụ
+              Cập nhật
             </Button>
           </Col>
         </Row>

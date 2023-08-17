@@ -1,10 +1,9 @@
-import { AddButtonCustom } from "@/Shared/components";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
 import { findEquipment } from "@/features/equipment/equipmentSlice";
 import { Header } from "@/layouts";
-import { Col, Row, Typography } from "antd";
+import { Button, Col, Input, Row, Select, Typography } from "antd";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -22,8 +21,6 @@ function EquipmentDetail() {
   const { Title, Text } = Typography;
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const route = routesConfig.equipmentUpdate.replace("/:id", "");
-
   useEffect(() => {
     dispatch(findEquipment(id || ""));
   }, [dispatch, id]);
@@ -40,10 +37,7 @@ function EquipmentDetail() {
           <Title className="title">Quản lý thiết bị</Title>
         </Col>
       </Row>
-      <Row
-        className="equipment-wrapper"
-        style={{ height: 500, position: "relative" }}
-      >
+      <Row className="equipment-wrapper" style={{ height: 500 }}>
         <Col span={24}>
           <Row>
             <Title className="equipment-wrapper-title">
@@ -230,11 +224,6 @@ function EquipmentDetail() {
             </Col>
           </Row>
         </Col>
-        <AddButtonCustom
-          nameAdd="Cập nhật thiết bị"
-          style={{ right: "-86px" }}
-          href={`${route}/${equipment.maThietBi}`}
-        />
       </Row>
     </Col>
   );

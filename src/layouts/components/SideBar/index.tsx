@@ -4,6 +4,7 @@ import MenuItem from "./MenuItem";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { SignOutIcon } from "@/Shared/components/icon";
+import { handlerSplitRoute } from "@/Shared/helpers";
 function SideBar() {
   const { Paragraph } = Typography;
   const location = useLocation();
@@ -27,6 +28,8 @@ function SideBar() {
         </Col>
       </Row>
       {MenuItem.map((menu, index) => {
+        console.log(handlerSplitRoute(location.pathname));
+
         return (
           <Row key={index}>
             <Col span={24}>
@@ -41,10 +44,14 @@ function SideBar() {
                   setIconNameHover("");
                 }}
                 className={`menu-link ${
-                  location.pathname === menu.path ? "active" : ""
+                  location.pathname === menu.path ||
+                  menu.route?.includes(handlerSplitRoute(location.pathname))
+                    ? "active"
+                    : ""
                 }`}
               >
-                {location.pathname === menu.path
+                {location.pathname === menu.path ||
+                menu.route?.includes(handlerSplitRoute(location.pathname))
                   ? menu.iconActive
                   : iconHover && iconName === menu.path
                   ? menu.iconHover
@@ -55,6 +62,30 @@ function SideBar() {
                 >
                   {menu.name}
                 </Paragraph>
+                {menu.hoverMenu ? (
+                  <Row className="hover-menu">
+                    {menu.hoverMenu?.map((item) => {
+                      return (
+                        <Col span={24}>
+                          <Link
+                            className={`hover-menu-link ${
+                              location.pathname === item.path ? `active` : ``
+                            }`}
+                            style={{
+                              color:
+                                location.pathname === item.path ? "white" : "",
+                            }}
+                            to={item.path}
+                          >
+                            {item.name}
+                          </Link>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                ) : (
+                  <></>
+                )}
               </Link>
             </Col>
           </Row>

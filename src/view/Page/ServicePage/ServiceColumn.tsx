@@ -1,23 +1,26 @@
+import { IService } from "@/Shared/interfaces/ServiceInterface";
 import routesConfig from "@/config/routes";
 import { Link } from "react-router-dom";
 
+export const collectionService = "service";
+
 export const columnsOffService = [
-  { title: "Mã dịch vụ", dataIndex: "maDichVu", key: "maDichVu" },
-  { title: "Tên dịch vụ", dataIndex: "tenDichVu", key: "tenDichVu" },
+  { title: "Mã dịch vụ", dataIndex: "id", key: "id" },
+  { title: "Tên dịch vụ", dataIndex: "name", key: "name" },
   {
     title: "Mô tả",
-    dataIndex: "moTa",
-    key: "moTa",
+    dataIndex: "describe",
+    key: "describe",
   },
   {
     title: "Trạng thái hoạt động",
-    dataIndex: "trangThaiHoatDong",
-    key: "trangThaiHoatDong",
+    dataIndex: "activeStatus",
+    key: "activeStatus",
   },
   {
     title: "Chi Tiết",
-    dataIndex: "chiTiet",
-    key: "chiTiet",
+    dataIndex: "detail",
+    key: "detail",
     render: (text: string) => {
       const route = routesConfig.serviceDetail.replace("/:id", "");
       return (
@@ -29,10 +32,10 @@ export const columnsOffService = [
   },
   {
     title: "Cập nhật",
-    dataIndex: "capNhat",
-    key: "capNhat",
+    dataIndex: "update",
+    key: "update",
     render: (text: string) => {
-      const route = routesConfig.serviceDetail.replace("/:id", "");
+      const route = routesConfig.serviceUpdate.replace("/:id", "");
       return (
         <Link to={`${route}/${text}`} className="custom-link-table">
           Cập nhật
@@ -42,14 +45,25 @@ export const columnsOffService = [
   },
 ];
 
-export const dataListService = [
-  {
-    key: 0,
-    maDichVu: "KIO_01",
-    tenDichVu: "Kiosk",
-    moTa: "Mô tả dịch vụ 1",
-    trangThaiHoatDong: "Hoạt động",
-    chiTiet: "001",
-    capNhat: "001",
-  },
+export const dataListService: IService[] = [
+  // {
+  //   key: 0,
+  //   maDichVu: "KIO_01",
+  //   tenDichVu: "Kiosk",
+  //   moTa: "Mô tả dịch vụ 1",
+  //   trangThaiHoatDong: "Hoạt động",
+  //   chiTiet: "001",
+  //   capNhat: "001",
+  // },
 ];
+
+export const dataServiceDetail: IService = {};
+// {
+//   key: 0,
+//   maDichVu: "KIO_01",
+//   tenDichVu: "Kiosk",
+//   moTa: "Mô tả dịch vụ 1",
+//   trangThaiHoatDong: "Hoạt động",
+//   chiTiet: "001",
+//   capNhat: "001",
+// },

@@ -39,6 +39,44 @@ export const DashboardIcon = ({ fillColor = "#A9A9B0" }) => {
   );
 };
 
+export const DropdownIcon = ({ fillColor = "#FF7506" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M6 9L12 15L18 9" fill={fillColor} />
+      <path
+        d="M6 9L12 15L18 9H6Z"
+        stroke={fillColor}
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
+export const ArrowIcon = ({ fillColor = "#535261" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="5"
+      height="6"
+      viewBox="0 0 5 6"
+      fill="none"
+    >
+      <path
+        d="M4.13346 2.46129L2.9735 1.75776L1.08342 0.611381C0.683023 0.372106 0 0.543527 0 0.886368V3.11126V5.11474C0 5.45758 0.683023 5.629 1.08342 5.38616L4.13346 3.53624C4.62218 3.2434 4.62218 2.75771 4.13346 2.46129Z"
+        fill={fillColor}
+      />
+    </svg>
+  );
+};
+
 export const EquipmentIcon = ({ fillColor = "#A9A9B0" }) => {
   return (
     <svg
@@ -174,6 +212,40 @@ export const ProgressionIcon = ({ fillColor = "#A9A9B0" }) => {
   );
 };
 
+export const SignOutIcon = ({ fillColor = "#FF7506" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
+      <path
+        d="M13.3335 14.1673L17.5002 10.0007L13.3335 5.83398"
+        stroke={fillColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M17.5 10H7.5"
+        stroke={fillColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5"
+        stroke={fillColor}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
 export const ReportIcon = ({ fillColor = "#A9A9B0" }) => {
   return (
     <svg
@@ -260,6 +332,23 @@ export const PlusIcon = ({ fillColor = "#FF9138" }) => {
   );
 };
 
+export const BackIcon = ({ fillColor = "#FF9138" }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+    >
+      <path
+        d="M18.8885 2.33301H9.11183C4.86516 2.33301 2.3335 4.86467 2.3335 9.11134V18.8763C2.3335 23.1347 4.86516 25.6663 9.11183 25.6663H18.8768C23.1235 25.6663 25.6552 23.1347 25.6552 18.888V9.11134C25.6668 4.86467 23.1352 2.33301 18.8885 2.33301ZM16.2402 18.818H10.5002C10.0218 18.818 9.62516 18.4213 9.62516 17.943C9.62516 17.4647 10.0218 17.068 10.5002 17.068H16.2402C17.7335 17.068 18.9585 15.8547 18.9585 14.3497C18.9585 12.8447 17.7452 11.6313 16.2402 11.6313H10.3252L10.6285 11.9347C10.9668 12.2847 10.9668 12.833 10.6168 13.183C10.4418 13.358 10.2202 13.4397 9.9985 13.4397C9.77683 13.4397 9.55516 13.358 9.38016 13.183L7.5485 11.3397C7.21016 11.0013 7.21016 10.4413 7.5485 10.103L9.38016 8.27134C9.7185 7.93301 10.2785 7.93301 10.6168 8.27134C10.9552 8.60967 10.9552 9.16967 10.6168 9.50801L10.2318 9.89301H16.2402C18.7018 9.89301 20.7085 11.8997 20.7085 14.3613C20.7085 16.823 18.7018 18.818 16.2402 18.818Z"
+        fill={fillColor}
+      />
+    </svg>
+  );
+};
+
 export const NotifyIcon = ({ fillColor = "#FFAC6A" }) => {
   return (
     <svg
@@ -276,40 +365,6 @@ export const NotifyIcon = ({ fillColor = "#FFAC6A" }) => {
       <path
         d="M12.3584 16.6753C12.0084 17.642 11.0834 18.3337 10 18.3337C9.34169 18.3337 8.69169 18.067 8.23336 17.592C7.96669 17.342 7.76669 17.0087 7.65002 16.667C7.75836 16.6837 7.86669 16.692 7.98336 16.7087C8.17502 16.7337 8.37502 16.7587 8.57502 16.7753C9.05002 16.817 9.53336 16.842 10.0167 16.842C10.4917 16.842 10.9667 16.817 11.4334 16.7753C11.6084 16.7587 11.7834 16.7503 11.95 16.7253C12.0834 16.7087 12.2167 16.692 12.3584 16.6753Z"
         fill={fillColor}
-      />
-    </svg>
-  );
-};
-
-export const SignOutIcon = ({ fillColor = "#FF7506" }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-    >
-      <path
-        d="M13.3335 14.1673L17.5002 10.0007L13.3335 5.83398"
-        stroke={fillColor}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17.5 10H7.5"
-        stroke={fillColor}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M7.5 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H7.5"
-        stroke={fillColor}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   );

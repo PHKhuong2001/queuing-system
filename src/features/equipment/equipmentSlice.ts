@@ -1,9 +1,11 @@
 import {
-  DataEquimentState,
   FulfilledAction,
-  IEquipment,
   PendingAction,
   RejectedAction,
+} from "@/Shared/interfaces";
+import {
+  DataEquimentState,
+  IEquipment,
 } from "@/Shared/interfaces/EquipmentInterface";
 import database from "@/config/firebase-config";
 import {

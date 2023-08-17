@@ -1,10 +1,22 @@
 import { AddButtonCustom, TableComponent } from "@/Shared/components";
+import { DropdownIcon } from "@/Shared/components/icon";
+import { useAppDispatch } from "@/app/hooks";
+import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
+import { gettAllService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
-import { Col, DatePicker, Row, Select, Typography } from "antd";
-import { dataListService } from "./ServiceColumn";
+import { Col, DatePicker, Input, Row, Select, Typography } from "antd";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 function ServicePage() {
+  const dataListService = useSelector(
+    (state: RootState) => state.service.dataListService
+  );
+  const dispatch = useAppDispatch();
   const { Title, Text } = Typography;
+  useEffect(() => {
+    dispatch(gettAllService());
+  }, [dispatch]);
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -31,6 +43,7 @@ function ServicePage() {
             defaultValue="Tất cả"
             style={{ width: "90%" }}
             className="equipment-select"
+            suffixIcon={<DropdownIcon />}
             // onChange={handleChangeSelectStatus}
             options={[
               { value: "all", label: "Tất cả" },
@@ -74,16 +87,7 @@ function ServicePage() {
           }}
         >
           <Text>Từ khoá</Text>
-          <Select
-            defaultValue="Tất cả"
-            style={{ width: "100%" }}
-            // onChange={handleChangeSelectStatus}
-            options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
-            ]}
-          />
+          <Input.Search style={{ width: "100%" }} className="search-antd" />
         </Col>
       </Row>
       <Row

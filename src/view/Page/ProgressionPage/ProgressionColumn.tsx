@@ -1,29 +1,31 @@
+import { IProgression } from "@/Shared/interfaces/ProgressionInterface";
 import routesConfig from "@/config/routes";
 import { Link } from "react-router-dom";
 
+export const collectionProgression = "progression";
 export const columnsOffProgression = [
   { title: "STT", dataIndex: "stt", key: "stt" },
-  { title: "Tên Khách Hàng", dataIndex: "tenKhachHang", key: "tenKhachHang" },
-  { title: "Tên dịch vụ", dataIndex: "tenDichVu", key: "tenDichVu" },
+  { title: "Tên Khách Hàng", dataIndex: "nameCustomer", key: "nameCustomer" },
+  { title: "Tên dịch vụ", dataIndex: "nameService", key: "nameService" },
   {
     title: "Thời gian cấp",
-    dataIndex: "thoiGianCap",
-    key: "thoiGianCap",
+    dataIndex: "grantTime",
+    key: "grantTime",
   },
   {
     title: "Hạn sử dụng",
-    dataIndex: "hanSuDung",
-    key: "hanSuDung",
+    dataIndex: "expiry",
+    key: "expiry",
   },
   {
     title: "Trạng thái",
-    dataIndex: "trangThai",
-    key: "trangThai",
+    dataIndex: "status",
+    key: "status",
   },
   {
     title: "Chi Tiết",
-    dataIndex: "chiTiet",
-    key: "chiTiet",
+    dataIndex: "detail",
+    key: "detail",
     render: (text: string) => {
       const route = routesConfig.progressionDetail.replace("/:id", "");
       return (
@@ -35,15 +37,17 @@ export const columnsOffProgression = [
   },
 ];
 
-export const dataListService = [
-  {
-    key: 0,
-    stt: 1,
-    tenKhachHang: "Lê Huỳnh Ái Vân",
-    tenDichVu: "Khám tim mạch",
-    thoiGianCap: "14:35 - 07/11/2021",
-    hanSuDung: "14:35 - 12/11/2021",
-    trangThai: "Đang chờ",
-    chiTiet: "001",
-  },
+export const dataListProgression: IProgression[] = [
+  // {
+  //   key: 0,
+  //   stt: 1,
+  //   nameCustomer: "Lê Huỳnh Ái Vân",
+  //   nameService: "Khám tim mạch",
+  //   grantTime: "14:35 - 07/11/2021",
+  //   expiry: "14:35 - 12/11/2021",
+  //   status: "Đang chờ",
+  //   detail: "001",
+  // },
 ];
+
+export const dataDetailProgression: IProgression = {};

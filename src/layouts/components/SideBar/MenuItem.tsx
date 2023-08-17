@@ -5,6 +5,7 @@ import {
   ReportIcon,
   ServiceIcon,
 } from "@/Shared/components/icon";
+import { handlerSplitRoute } from "@/Shared/helpers";
 import { ISideBarItem } from "@/Shared/interfaces/SideBarInterface";
 import routesConfig from "@/config/routes";
 
@@ -22,6 +23,11 @@ const MenuItem: ISideBarItem[] = [
     iconHover: <EquipmentIcon fillColor="#ff7506" />,
     name: "Thiết bị",
     path: routesConfig.equipment,
+    route: [
+      `${handlerSplitRoute(routesConfig.equipmentUpdate)}`,
+      `${handlerSplitRoute(routesConfig.equipmentDetail)}`,
+      routesConfig.equipmentCreate,
+    ],
   },
   {
     icon: <ServiceIcon />,
@@ -29,6 +35,11 @@ const MenuItem: ISideBarItem[] = [
     iconHover: <ServiceIcon fillColor="#ff7506" />,
     name: "Dịch vụ",
     path: routesConfig.service,
+    route: [
+      `${handlerSplitRoute(routesConfig.serviceUpdate)}`,
+      `${handlerSplitRoute(routesConfig.serviceDetail)}`,
+      routesConfig.serviceCreate,
+    ],
   },
   {
     icon: <ProgressionIcon />,
@@ -36,6 +47,10 @@ const MenuItem: ISideBarItem[] = [
     iconHover: <ProgressionIcon fillColor="#ff7506" />,
     name: "Cấp số",
     path: routesConfig.progression,
+    route: [
+      `${handlerSplitRoute(routesConfig.progressionDetail)}`,
+      routesConfig.progressionCreate,
+    ],
   },
   {
     icon: <ReportIcon />,
@@ -49,19 +64,24 @@ const MenuItem: ISideBarItem[] = [
     iconActive: <DashboardIcon fillColor="white" />,
     iconHover: <DashboardIcon fillColor="#ff7506" />,
     name: "Cài đặt hệ thống",
-    menu: [
+    hoverMenu: [
       {
-        name: "",
-        path: "",
+        name: "Quản lý vai trò",
+        path: routesConfig.roleManagement,
       },
       {
-        name: "",
-        path: "",
+        name: "Quản lý tài khoản",
+        path: routesConfig.accountManagement,
       },
       {
-        name: "",
-        path: "",
+        name: "Nhật ký người dùng",
+        path: routesConfig.userLogs,
       },
+    ],
+    route: [
+      // `${handlerSplitRoute(routesConfig.roleUpdate)}`,
+      // routesConfig.roleCreate,
+      routesConfig.roleManagement,
     ],
   },
 ];

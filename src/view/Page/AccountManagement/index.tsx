@@ -1,9 +1,23 @@
 import { AddButtonCustom, TableComponent } from "@/Shared/components";
+import { DropdownIcon } from "@/Shared/components/icon";
+import { useAppDispatch } from "@/app/hooks";
+import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
+import { getAllAccount } from "@/features/auth/authSlice";
 import { Header } from "@/layouts";
-import { Col, Row, Select, Typography } from "antd";
+import { Col, Input, Row, Select, Typography } from "antd";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 function AccountManagementPage() {
+  const listAccount = useSelector(
+    (state: RootState) => state.auth.dataListAccount
+  );
+  const dispatch = useAppDispatch();
   const { Text, Title } = Typography;
+
+  useEffect(() => {
+    dispatch(getAllAccount());
+  }, [dispatch]);
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -17,6 +31,7 @@ function AccountManagementPage() {
         </Col>
       </Row>
       <Row
+        className="d-flex justify-content-between"
         style={{ paddingLeft: "2rem", paddingRight: "5rem", marginTop: "15px" }}
       >
         <Col
@@ -31,31 +46,13 @@ function AccountManagementPage() {
           <Select
             defaultValue="Tất cả"
             style={{ width: "90%" }}
-            // onChange={handleChangeSelectStatus}
+            className="equipment-select"
+            suffixIcon={<DropdownIcon />}
+            // onChange={handlerSelectActive}
             options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
-            ]}
-          />
-        </Col>
-        <Col
-          span={10}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <Text>Trạng thái kết nối</Text>
-          <Select
-            defaultValue="Tất cả"
-            style={{ width: "70%" }}
-            // onChange={handleChangeSelectStatus}
-            options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
+              { value: "Tất cả", label: "Tất cả" },
+              { value: "Hoạt động", label: "Hoạt động" },
+              { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
             ]}
           />
         </Col>
@@ -68,16 +65,7 @@ function AccountManagementPage() {
           }}
         >
           <Text>Từ khoá</Text>
-          <Select
-            defaultValue="Tất cả"
-            style={{ width: "100%" }}
-            // onChange={handleChangeSelectStatus}
-            options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
-            ]}
-          />
+          <Input.Search style={{ width: "100%" }} className="search-antd" />
         </Col>
       </Row>
       <Row
@@ -89,11 +77,11 @@ function AccountManagementPage() {
         }}
       >
         <AddButtonCustom
-          nameAdd="Thêm thiết bị"
-          href={routesConfig.equipment}
+          nameAdd="Thêm tài khoản"
+          href={routesConfig.accountCreate}
         />
         <Col span={24}>
-          <TableComponent data={[]} />
+          <TableComponent data={listAccount} />
         </Col>
       </Row>
     </Col>

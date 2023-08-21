@@ -1,4 +1,5 @@
 import routesConfig from "@/config/routes";
+import { columnsOffAccount } from "@/view/Page/AccountManagement/AccountColumn";
 import { columnsOffEquipment } from "@/view/Page/Equipment/EquipmentColumn";
 import { columnsOffProgression } from "@/view/Page/ProgressionPage/ProgressionColumn";
 import { columnsOffReport } from "@/view/Page/ReportPage/ReportColumn";
@@ -48,6 +49,8 @@ const TableComponent = ({ data, height = "400px", width }: TableProps) => {
         return columnsOffReport;
       case routesConfig.roleManagement:
         return columnsOffRole;
+      case routesConfig.accountManagement:
+        return columnsOffAccount;
       default:
         return;
     }

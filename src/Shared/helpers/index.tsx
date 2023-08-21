@@ -1,17 +1,12 @@
-import routesConfig from "@/config/routes";
 import moment from "moment";
 
 export const handlerSplitRoute = (routeString: string) => {
   let route = "";
-  if (routeString.includes("/:id")) {
-    route = routeString.replace("/:id", "");
+  if (routeString.includes("/detail" || "/update")) {
+    const matchResult = routeString.match(/(\/[^/]+\/[^/]+)/);
+    route = matchResult ? matchResult[0] : "";
   } else {
-    if (routeString === routesConfig.roleManagement) {
-      route = routeString;
-    } else {
-      const matchResult = routeString.match(/(\/[^/]+\/[^/]+)/);
-      route = matchResult ? matchResult[0] : "";
-    }
+    route = routeString;
   }
   return route;
 };

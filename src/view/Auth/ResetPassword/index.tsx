@@ -1,12 +1,15 @@
 import images from "@/Shared/assets/images";
-import routesConfig from "@/config/routes";
 import { Col, Form, Image, Typography, Row, Input, Button } from "antd";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-function ChangePassword() {
+function ResetPassword() {
   const { Text, Title } = Typography;
-  const handlerSubmitChangePassword = () => {
+  const handlerSubmitResetPassword = () => {
     return false;
   };
+  const navigate = useNavigate();
+  useEffect(() => {});
   return (
     <Col
       span={24}
@@ -22,7 +25,7 @@ function ChangePassword() {
       <Row style={{ marginTop: "45px" }}>
         <Col span={24}>
           <Form
-            onFinish={handlerSubmitChangePassword}
+            onFinish={handlerSubmitResetPassword}
             style={{
               display: "flex",
               justifyContent: "center",
@@ -88,4 +91,4 @@ function ChangePassword() {
   );
 }
 
-export default ChangePassword;
+export default ResetPassword;

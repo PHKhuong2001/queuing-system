@@ -1,9 +1,21 @@
 import { AddButtonCustom, TableComponent } from "@/Shared/components";
 import { ArrowIcon } from "@/Shared/components/icon";
+import { useAppDispatch } from "@/app/hooks";
+import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
+import { gettAllReport } from "@/features/progression/progressionSlice";
 import { Header } from "@/layouts";
 import { Col, DatePicker, Row, Typography } from "antd";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 function ReportPage() {
+  const dataReport = useSelector(
+    (state: RootState) => state.progression.dataListReport
+  );
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(gettAllReport());
+  }, [dispatch]);
   const { Text } = Typography;
   return (
     <Col span={24} style={{ height: "100%" }}>
@@ -64,7 +76,7 @@ function ReportPage() {
       >
         <AddButtonCustom nameAdd="Tải về" href={routesConfig.equipment} />
         <Col span={24}>
-          <TableComponent data={[]} />
+          <TableComponent data={dataReport} />
         </Col>
       </Row>
     </Col>

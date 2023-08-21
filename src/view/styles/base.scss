@@ -1,0 +1,45 @@
+.d-flex {
+  display: flex;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.justify-content-around {
+  justify-content: space-around;
+}
+.justify-content-evenly {
+  justify-content: space-evenly;
+}
+.justify-content-end {
+  justify-content: end;
+}
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-absolute-center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.align-items-center {
+  align-items: center;
+}
+.align-items-end {
+  align-items: end;
+}
+.flex-derection-column {
+  flex-direction: column;
+}
+
+.boxShadow-dashboard {
+  box-shadow: 2px 2px 15px 0px #4640431a;
+  .ant-picker-panel {
+    box-shadow: 2px 2px 15px 0px #4640431a;
+  }
+}

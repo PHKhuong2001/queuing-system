@@ -1,30 +1,50 @@
-import { useAppDispatch } from "@/app/hooks";
-import { RootState } from "@/app/store";
+import { IEquipment } from "@/Shared/interfaces/EquipmentInterface";
 import routesConfig from "@/config/routes";
-import { findEquipment } from "@/features/equipment/equipmentSlice";
+
 import { Header } from "@/layouts";
-import { Button, Col, Input, Row, Select, Typography } from "antd";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Button, Col, Form, Input, Row, Typography } from "antd";
+import { useState } from "react";
+// import { useNavigate, useParams } from "react-router-dom";
 
 export const status = [
   { value: "Tất cả", label: "Tất cả" },
   { value: "Hoạt động", label: "Hoạt động" },
   { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
 ];
+const formUpdate: IEquipment = {
+  maThietBi: "",
+  loaiThietBi: "",
+  tenThietBi: "",
+  dangNhap: "",
+  ip: "",
+  password: "",
+  dichVuSuDung: "",
+};
 
-function EquipmentDetail() {
-  const equipment = useSelector(
-    (state: RootState) => state.equipment.equipmentDetail
-  );
+function RoleCreate() {
+  // const equipment = useSelector(
+  //   (state: RootState) => state.equipment.equipmentUpdate
+  // );
+  const [formValue, setFormUpdateValue] = useState(formUpdate);
   const { Title, Text } = Typography;
-  const dispatch = useAppDispatch();
-  const { id } = useParams();
-  useEffect(() => {
-    dispatch(findEquipment(id || ""));
-  }, [dispatch, id]);
+  // const { id } = useParams();
 
+  // useEffect(() => {
+  //   // Sử dụng useEffect để cập nhật giá trị formValue khi equipment thay đổi
+  //   if (equipment) {
+  //     setFormUpdateValue(equipment);
+  //   }
+  // }, [equipment]);
+
+  // useEffect(() => {
+  //   dispatch(findEquipmentUpdate(id || ""));
+  // }, [dispatch, id]);
+
+  const handlerSubmitFormUpdate = () => {
+    // setFormUpdateValue(formUpdate);
+    // navigate(routesConfig.equipment);
+    // return false;
+  };
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -32,201 +52,91 @@ function EquipmentDetail() {
           <Header />
         </Col>
       </Row>
-      <Row style={{ paddingLeft: "2rem" }}>
-        <Col>
-          <Title className="title">Quản lý thiết bị</Title>
-        </Col>
-      </Row>
-      <Row className="equipment-wrapper" style={{ height: 500 }}>
-        <Col span={24}>
-          <Row>
-            <Title className="equipment-wrapper-title">
-              Thông tin thiết bị
-            </Title>
-          </Row>
-          <Row
-            style={{
-              marginTop: 5,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
+      <Form onFinish={handlerSubmitFormUpdate}>
+        <Row style={{ paddingLeft: "2rem" }}>
+          <Col>
+            <Title className="title">Danh sách vai trò</Title>
+          </Col>
+        </Row>
+        <Row className="equipment-wrapper">
+          <Col span={24}>
+            <Row>
+              <Title className="equipment-wrapper-title">
+                Thông tin vai trò
+              </Title>
+            </Row>
+            <Row
+              style={{
+                marginTop: 5,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Col span={12} className="equipment-create-group">
+                <Row style={{ marginBottom: 10 }}>
+                  <Text className="equipment-input-label">Tên vai trò *</Text>
+                  <Input
+                    style={{ width: "95%", height: 38 }}
+                    placeholder="Nhập tên vai trò"
+                    value={formValue.maThietBi}
+                    onChange={(e) =>
+                      setFormUpdateValue((prev) => ({
+                        ...prev,
+                        maThietBi: e.target.value,
+                      }))
+                    }
+                  />
+                </Row>
+                <Row>
+                  <Text className="equipment-input-label">Mô tả:</Text>
+                  <Input.TextArea
+                    style={{ width: "95%", height: 160 }}
+                    placeholder="Nhập mã thiết bị"
+                    value={formValue.maThietBi}
+                    onChange={(e) =>
+                      setFormUpdateValue((prev) => ({
+                        ...prev,
+                        maThietBi: e.target.value,
+                      }))
+                    }
+                  />
+                </Row>
+              </Col>
+              <Col span={12} className="equipment-create-group">
+                <Text className="equipment-input-label">Loại thiết bị *</Text>
+                <Row>
+                  <Col span={24}></Col>
+                </Row>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+        <Row
+          style={{
+            paddingLeft: "2rem",
+            marginTop: 30,
+            width: 1000,
+          }}
+        >
+          <Col
+            span={24}
+            style={{ display: "flex", justifyContent: "center", gap: 20 }}
           >
-            <Col
-              span={12}
-              className="equipment-create-group"
-              style={{ flexDirection: "row", gap: 30 }}
+            <Button
+              type="link"
+              href={routesConfig.equipment}
+              className="button-cancel"
             >
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  Mã thiết bị:{" "}
-                </Text>
-              </Col>
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem", fontWeight: "400" }}
-                >
-                  {equipment.maThietBi}
-                </Text>
-              </Col>
-            </Col>
-            <Col
-              span={12}
-              className="equipment-create-group"
-              style={{ flexDirection: "row", gap: 30 }}
-            >
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  Loại thiết bị:{" "}
-                </Text>
-              </Col>
-
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem", fontWeight: "400" }}
-                >
-                  {equipment.loaiThietBi}
-                </Text>
-              </Col>
-            </Col>
-          </Row>
-          <Row
-            style={{
-              marginTop: 15,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Col
-              span={12}
-              className="equipment-create-group"
-              style={{ flexDirection: "row", gap: 30 }}
-            >
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  Tên thiết bị:{" "}
-                </Text>
-              </Col>
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem", fontWeight: "400" }}
-                >
-                  {equipment.tenThietBi}
-                </Text>
-              </Col>
-            </Col>
-            <Col
-              span={12}
-              className="equipment-create-group"
-              style={{ flexDirection: "row", gap: 30 }}
-            >
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  Tên đăng nhập:{" "}
-                </Text>
-              </Col>
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem", fontWeight: "400" }}
-                >
-                  {equipment.dangNhap}
-                </Text>
-              </Col>
-            </Col>
-          </Row>
-          <Row
-            style={{
-              marginTop: 15,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Col
-              span={12}
-              className="equipment-create-group"
-              style={{ flexDirection: "row", gap: 30 }}
-            >
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  Dịa chỉ IP:{" "}
-                </Text>
-              </Col>
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem", fontWeight: "400" }}
-                >
-                  {equipment.ip}
-                </Text>
-              </Col>
-            </Col>
-            <Col
-              span={12}
-              className="equipment-create-group"
-              style={{ flexDirection: "row", gap: 30 }}
-            >
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem" }}
-                >
-                  Mật khẩu:{" "}
-                </Text>
-              </Col>
-              <Col span={6}>
-                <Text
-                  className="equipment-input-label"
-                  style={{ fontSize: "0.9rem", fontWeight: "400" }}
-                >
-                  {equipment.password}
-                </Text>
-              </Col>
-            </Col>
-          </Row>
-          <Row
-            style={{
-              marginTop: 15,
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Col span={24} className="equipment-create-group">
-              <Text
-                className="equipment-input-label"
-                style={{ fontSize: "0.9rem" }}
-              >
-                Dịch vụ sử dụng:
-              </Text>
-              <Text
-                className="equipment-input-label"
-                style={{ fontSize: "0.9rem", fontWeight: "400" }}
-              >
-                {equipment.dichVuSuDung}
-              </Text>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+              Huỷ bỏ
+            </Button>
+            <Button className="button-continue" htmlType="submit">
+              Thêm
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     </Col>
   );
 }
 
-export default EquipmentDetail;
+export default RoleCreate;

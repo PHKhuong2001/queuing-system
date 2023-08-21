@@ -16,4 +16,5 @@ export interface IProgression {
 export interface InitialStateProgression {
   dataListProgression: IProgression[];
   dataDetailProgression: IProgression;
+  dataListReport: IProgression[];
 }

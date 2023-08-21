@@ -79,9 +79,13 @@ const MenuItem: ISideBarItem[] = [
       },
     ],
     route: [
-      // `${handlerSplitRoute(routesConfig.roleUpdate)}`,
-      // routesConfig.roleCreate,
+      `${handlerSplitRoute(routesConfig.roleUpdate)}`,
+      routesConfig.roleCreate,
       routesConfig.roleManagement,
+      routesConfig.accountManagement,
+      routesConfig.accountCreate,
+      `${handlerSplitRoute(routesConfig.accountUpdate)}`,
+      routesConfig.userLogs,
     ],
   },
 ];

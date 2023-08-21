@@ -51,3 +51,4 @@ export const dataListProgression: IProgression[] = [
 ];
 
 export const dataDetailProgression: IProgression = {};
+export const dataListReport: IProgression[] = [];

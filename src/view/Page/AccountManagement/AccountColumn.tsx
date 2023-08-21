@@ -24,9 +24,9 @@ export const columnsOffAccount = [
   },
   { title: "Trạng thái hoạt động", dataIndex: "status", key: "status" },
   {
-    title: "Cập nhật",
-    dataIndex: "capNhat",
-    key: "capNhat",
+    title: " ",
+    dataIndex: "update",
+    key: "update",
     render: (text: string) => {
       const route = routesConfig.accountUpdate.replace("/:id", "");
       return (

@@ -6,17 +6,27 @@ import routesConfig from "@/config/routes";
 import { gettAllService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Col, DatePicker, Input, Row, Select, Typography } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 function ServicePage() {
   const dataListService = useSelector(
     (state: RootState) => state.service.dataListService
   );
+  const [activeStatus, setActiveStatus] = useState<string>("");
   const dispatch = useAppDispatch();
   const { Title, Text } = Typography;
   useEffect(() => {
-    dispatch(gettAllService());
-  }, [dispatch]);
+    dispatch(gettAllService(activeStatus));
+  }, [dispatch, activeStatus]);
+
+  const handlerSelectActive = (e: string) => {
+    if (e === "Tất cả") {
+      setActiveStatus("");
+    } else {
+      setActiveStatus(e);
+    }
+  };
+
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -44,11 +54,11 @@ function ServicePage() {
             style={{ width: "90%" }}
             className="equipment-select"
             suffixIcon={<DropdownIcon />}
-            // onChange={handleChangeSelectStatus}
+            onChange={handlerSelectActive}
             options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
+              { value: "Tất cả", label: "Tất cả" },
+              { value: "Hoạt động", label: "Hoạt động" },
+              { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
             ]}
           />
         </Col>

@@ -2,12 +2,15 @@ import { IService } from "@/Shared/interfaces/ServiceInterface";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
-import { findServiceUpdate } from "@/features/serviceSlice/serviceSlice";
+import {
+  findServiceUpdate,
+  updateService,
+} from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Button, Checkbox, Col, Form, Input, Row, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const status = [
   { value: "Tất cả", label: "Tất cả" },
@@ -20,7 +23,6 @@ const formUpdate: IService = {
   describe: "",
   from: "",
   to: "",
-  createdAt: "",
 };
 
 function ServiceUpdate() {
@@ -31,25 +33,42 @@ function ServiceUpdate() {
   const { id } = useParams();
   const [formNewUpdate, setFormNewUpdate] = useState(formUpdate);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (dataServiceUpdate) {
+      setFormNewUpdate(dataServiceUpdate);
+    }
+  }, [dataServiceUpdate]);
+
   useEffect(() => {
     dispatch(findServiceUpdate(id || ""));
-    setFormNewUpdate(dataServiceUpdate);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, id]);
-  const handlerSubmitUpdate = () => {};
+  const handlerSubmitUpdate = () => {
+    if (
+      formNewUpdate.id &&
+      formNewUpdate.name &&
+      formNewUpdate.describe &&
+      formNewUpdate.from &&
+      formNewUpdate.to
+    ) {
+      dispatch(updateService({ service: formNewUpdate, serviceId: id || "" }));
+      navigate(routesConfig.service);
+    }
+  };
   return (
-    <Form onFinish={handlerSubmitUpdate}>
-      <Col span={24} style={{ height: "100%" }}>
-        <Row>
-          <Col span={24}>
-            <Header />
-          </Col>
-        </Row>
-        <Row style={{ paddingLeft: "2rem" }}>
-          <Col>
-            <Title className="title">Quản lý dịch vụ</Title>
-          </Col>
-        </Row>
+    <Col span={24} style={{ height: "100%" }}>
+      <Row>
+        <Col span={24}>
+          <Header />
+        </Col>
+      </Row>
+      <Row style={{ paddingLeft: "2rem" }}>
+        <Col>
+          <Title className="title">Quản lý dịch vụ</Title>
+        </Col>
+      </Row>
+      <Form onFinish={handlerSubmitUpdate}>
         <Row className="equipment-wrapper">
           <Col span={24}>
             <Row>
@@ -147,9 +166,12 @@ function ServiceUpdate() {
                 span={4}
                 style={{ display: "flex", alignItems: "center", gap: 10 }}
               >
-                <Input style={{ width: "35%" }} />
+                <Input
+                  style={{ width: "35%" }}
+                  value={dataServiceUpdate.from}
+                />
                 <Text>đến</Text>
-                <Input style={{ width: "35%" }} />
+                <Input style={{ width: "35%" }} value={dataServiceUpdate.to} />
               </Col>
             </Row>
             <Row style={{ marginTop: 10 }}>
@@ -199,8 +221,8 @@ function ServiceUpdate() {
             </Button>
           </Col>
         </Row>
-      </Col>
-    </Form>
+      </Form>
+    </Col>
   );
 }
 

@@ -1,3 +1,4 @@
+import { dataListReport } from "@/view/Page/ProgressionPage/ProgressionColumn";
 import {
   collectionProgression,
   dataDetailProgression,
@@ -28,6 +29,7 @@ import {
 const initialState: InitialStateProgression = {
   dataListProgression,
   dataDetailProgression,
+  dataListReport,
 };
 
 export const gettAllProgression = createAsyncThunk(
@@ -84,7 +86,7 @@ export const gettAllReport = createAsyncThunk(
     const response = await getDocs(queryApi);
     const data = response.docs.map<IProgression>((doc, index) => ({
       stt: doc.data().ID,
-      nameService: doc.data().nameServices,
+      nameService: doc.data().nameService,
       grantTime: `${changeTime(doc.data().grantTime.seconds)} - ${changeDate(
         doc.data().grantTime.seconds
       )}`,
@@ -168,6 +170,9 @@ const progressionSlice = createSlice({
     builder
       .addCase(gettAllProgression.fulfilled, (state, action) => {
         state.dataListProgression = [...action.payload];
+      })
+      .addCase(gettAllReport.fulfilled, (state, action) => {
+        state.dataListReport = [...action.payload];
       })
       .addCase(findProgression.fulfilled, (state, action) => {
         state.dataDetailProgression = { ...action.payload };

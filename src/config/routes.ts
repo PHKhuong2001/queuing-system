@@ -2,7 +2,7 @@ const routesConfig = {
   // Route Auth
   login: "/",
   forgotPassword: "/forgot-password",
-  changePassword: "/change-password",
+  changePassword: "/reset-password/:oobCode",
   personalInformation: "/information",
 
   // Route Dashboard
@@ -35,7 +35,9 @@ const routesConfig = {
 
   accountManagement: "/account",
   accountUpdate: "/account/update/:id",
+  accountDetail: "/account/detail/:id",
   accountCreate: "/account/create",
+
   userLogs: "/user-log",
 };
 

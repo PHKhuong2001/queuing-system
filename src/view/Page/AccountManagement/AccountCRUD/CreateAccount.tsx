@@ -1,7 +1,8 @@
-import { IEquipment } from "@/Shared/interfaces/EquipmentInterface";
+import { DropdownIcon } from "@/Shared/components/icon";
+import { IAccount } from "@/Shared/interfaces/AccountInterface";
 import { useAppDispatch } from "@/app/hooks";
 import routesConfig from "@/config/routes";
-import { addNewEquipment } from "@/features/equipment/equipmentSlice";
+import { addNewAccount } from "@/features/auth/authSlice";
 import { Header } from "@/layouts";
 import { Button, Col, Form, Input, Row, Select, Typography } from "antd";
 import { useState } from "react";
@@ -13,55 +14,61 @@ export const status = [
   { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
 ];
 
-const formCreate: IEquipment = {
-  maThietBi: "",
-  loaiThietBi: "",
-  tenThietBi: "",
-  dangNhap: "",
-  ip: "",
+const formAccount: IAccount = {
+  name: "",
+  phoneNumber: "",
+  email: "",
+  role: "",
+  status: "",
+  account: "",
   password: "",
-  dichVuSuDung: "",
 };
 
-function EquipmentCreate() {
+function AccountCreate() {
   const { Title, Text } = Typography;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [formValue, setFormCreateValue] = useState<IEquipment>(formCreate);
+  const [formValue, setFormCreateValue] = useState<IAccount>(formAccount);
+  const [validConfirmPassword, setValidConfirmPassword] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const handlerSubmitCreate = () => {
     if (
-      formValue.maThietBi &&
-      formValue.loaiThietBi &&
-      formValue.tenThietBi &&
-      formValue.dangNhap &&
-      formValue.ip &&
+      formValue.name &&
+      formValue.phoneNumber &&
+      formValue.email &&
+      formValue.role &&
+      formValue.status &&
       formValue.password &&
-      formValue.dichVuSuDung
+      formValue.account
     ) {
-      dispatch(addNewEquipment(formValue));
-      setFormCreateValue(formCreate);
-      navigate(routesConfig.equipment);
+      if (formValue.password === confirmPassword) {
+        dispatch(addNewAccount(formValue));
+        setFormCreateValue(formAccount);
+        navigate(routesConfig.accountManagement);
+      } else {
+        setValidConfirmPassword(false);
+      }
     }
     return false;
   };
   return (
-    <Form onFinish={handlerSubmitCreate}>
-      <Col span={24} style={{ height: "100%" }}>
-        <Row>
-          <Col span={24}>
-            <Header />
-          </Col>
-        </Row>
-        <Row style={{ paddingLeft: "2rem" }}>
-          <Col>
-            <Title className="title">Quản lý thiết bị</Title>
-          </Col>
-        </Row>
+    <Col span={24} style={{ height: "100%" }}>
+      <Row>
+        <Col span={24}>
+          <Header />
+        </Col>
+      </Row>
+      <Row style={{ paddingLeft: "2rem" }}>
+        <Col>
+          <Title className="title">Quản lý tài khoản</Title>
+        </Col>
+      </Row>
+      <Form onFinish={handlerSubmitCreate}>
         <Row className="equipment-wrapper">
           <Col span={24}>
             <Row>
               <Title className="equipment-wrapper-title">
-                Thông tin thiết bị
+                Thông tin tài khoản
               </Title>
             </Row>
             <Row
@@ -72,69 +79,27 @@ function EquipmentCreate() {
               }}
             >
               <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Mã thiết bị *</Text>
+                <Text className="equipment-input-label">Họ tên *</Text>
                 <Input
                   style={{ width: "95%", height: 38 }}
-                  placeholder="Nhập mã thiết bị"
-                  value={formValue.maThietBi}
+                  placeholder="Nhập họ tên"
                   onChange={(e) =>
                     setFormCreateValue((prev) => ({
                       ...prev,
-                      maThietBi: e.target.value,
+                      name: e.target.value,
                     }))
                   }
                 />
               </Col>
               <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Loại thiết bị *</Text>
-                <Select
-                  style={{ width: "95%", height: 38 }}
-                  placeholder="Chọn loại thiết bị"
-                  className="equipment-select-create"
-                  options={[
-                    { value: "Kiosk", label: "Kiosk" },
-                    { value: "Display counter", label: "Display counter" },
-                  ]}
-                  value={formValue.loaiThietBi}
-                  onChange={(e) =>
-                    setFormCreateValue((prev) => ({
-                      ...prev,
-                      loaiThietBi: e,
-                    }))
-                  }
-                />
-              </Col>
-            </Row>
-            <Row
-              style={{
-                marginTop: 15,
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Tên thiết bị: *</Text>
-                <Input
-                  style={{ width: "95%", height: 38 }}
-                  placeholder="Nhập tên thiết bị"
-                  value={formValue.tenThietBi}
-                  onChange={(e) =>
-                    setFormCreateValue((prev) => ({
-                      ...prev,
-                      tenThietBi: e.target.value,
-                    }))
-                  }
-                />
-              </Col>
-              <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Tên đăng nhập: *</Text>
+                <Text className="equipment-input-label">Tên đăng nhập *</Text>
                 <Input
                   style={{ width: "95%", height: 38 }}
                   placeholder="Nhập tên đăng nhập"
                   onChange={(e) =>
                     setFormCreateValue((prev) => ({
                       ...prev,
-                      dangNhap: e.target.value,
+                      account: e.target.value,
                     }))
                   }
                 />
@@ -148,25 +113,23 @@ function EquipmentCreate() {
               }}
             >
               <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Địa chỉ IP: *</Text>
+                <Text className="equipment-input-label">Số điện thoại *</Text>
                 <Input
                   style={{ width: "95%", height: 38 }}
-                  placeholder="Nhập địa chỉ IP"
-                  value={formValue.ip}
+                  placeholder="Nhập số diện thoại"
                   onChange={(e) =>
                     setFormCreateValue((prev) => ({
                       ...prev,
-                      ip: e.target.value,
+                      phoneNumber: e.target.value,
                     }))
                   }
                 />
               </Col>
               <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Mật khẩu: *</Text>
-                <Input
+                <Text className="equipment-input-label">Mật khẩu *</Text>
+                <Input.Password
                   style={{ width: "95%", height: 38 }}
                   placeholder="Nhập mật khẩu"
-                  value={formValue.password}
                   onChange={(e) =>
                     setFormCreateValue((prev) => ({
                       ...prev,
@@ -183,20 +146,76 @@ function EquipmentCreate() {
                 justifyContent: "space-between",
               }}
             >
-              <Col span={24} className="equipment-create-group">
-                <Text className="equipment-input-label">
-                  Dịch vụ sử dụng: *
-                </Text>
+              <Col span={12} className="equipment-create-group">
+                <Text className="equipment-input-label">Email *</Text>
                 <Input
-                  style={{ width: "97.6%", height: 38 }}
-                  placeholder="Nhập mã thiết bị"
-                  value={formValue.dichVuSuDung}
+                  style={{ width: "95%", height: 38 }}
+                  placeholder="Nhập email"
                   onChange={(e) =>
                     setFormCreateValue((prev) => ({
                       ...prev,
-                      dichVuSuDung: e.target.value,
+                      email: e.target.value,
                     }))
                   }
+                />
+              </Col>
+              <Col span={12} className="equipment-create-group">
+                <Text className="equipment-input-label">
+                  Nhập lại mật khẩu: *
+                </Text>
+                <Input.Password
+                  style={{ width: "95%", height: 38 }}
+                  placeholder="Nhập lại mật khẩu"
+                  onChange={(e) => setConfirmPassword((prev) => e.target.value)}
+                  status={validConfirmPassword ? undefined : "error"}
+                />
+              </Col>
+            </Row>
+            <Row
+              style={{
+                marginTop: 15,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Col span={12} className="equipment-create-group">
+                <Text className="equipment-input-label">Vai trò *</Text>
+                <Select
+                  style={{ width: "95%", height: 38 }}
+                  placeholder="Chọn vai trò"
+                  className="equipment-select-create"
+                  suffixIcon={<DropdownIcon></DropdownIcon>}
+                  onChange={(e) =>
+                    setFormCreateValue((prev) => ({
+                      ...prev,
+                      role: e,
+                    }))
+                  }
+                  options={[
+                    { value: "Kế toán", label: "Kế toán" },
+                    { value: "Quản lý", label: "Quản lý" },
+                    { value: "Admin", label: "Admin" },
+                  ]}
+                />
+              </Col>
+              <Col span={12} className="equipment-create-group">
+                <Text className="equipment-input-label">Tình trạng *</Text>
+                <Select
+                  style={{ width: "95%", height: 38 }}
+                  placeholder="Chọn tình trạng"
+                  className="equipment-select-create"
+                  onChange={(e) =>
+                    setFormCreateValue((prev) => ({
+                      ...prev,
+                      status: e,
+                    }))
+                  }
+                  suffixIcon={<DropdownIcon></DropdownIcon>}
+                  options={[
+                    { value: "Tất cả", label: "Tất cả" },
+                    { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
+                    { value: "Hoạt động", label: "Hoạt động" },
+                  ]}
                 />
               </Col>
             </Row>
@@ -215,19 +234,20 @@ function EquipmentCreate() {
           >
             <Button
               type="link"
-              href={routesConfig.equipment}
+              href={routesConfig.accountManagement}
+              onClick={() => setFormCreateValue(formAccount)}
               className="button-cancel"
             >
               Huỷ bỏ
             </Button>
             <Button className="button-continue" htmlType="submit">
-              Thêm thiết bị
+              Thêm tài khoản
             </Button>
           </Col>
         </Row>
-      </Col>
-    </Form>
+      </Form>
+    </Col>
   );
 }
 
-export default EquipmentCreate;
+export default AccountCreate;

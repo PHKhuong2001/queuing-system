@@ -8,7 +8,11 @@
 @import "../styles/component-style/sidebar.scss";
 @import "../styles/component-style/table.scss";
 @import "../styles/component-style/button.scss";
+@import "../styles/component-style/modal.scss";
 
 // Main Style
 @import "../styles/main-style/information.scss";
 @import "../styles/main-style/equipment.scss";
+@import "../styles/main-style/dashboard.scss";
+
+@import "./base.scss";

@@ -1,7 +1,7 @@
 import {
   dataListService,
   dataServiceDetail,
-} from "./../../view/Page/ServicePage/ServiceColumn";
+} from "@/view/Page/ServicePage/ServiceColumn";
 import {
   FulfilledAction,
   PendingAction,
@@ -21,6 +21,7 @@ import {
   getDocs,
   limit,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -31,16 +32,12 @@ const initialState: InitialStateService = {
 
 export const gettAllService = createAsyncThunk(
   "service/gettAllService",
-  async (_) => {
+  async (active: string) => {
     let queryApi: Query<DocumentData> = collection(database, collectionService);
 
-    // if (active) {
-    //   queryApi = query(queryApi, where("activeStatus", "==", active));
-    // }
-
-    // if (connect) {
-    //   queryApi = query(queryApi, where("connectStatus", "==", connect));
-    // }
+    if (active) {
+      queryApi = query(queryApi, where("activeStatus", "==", active));
+    }
 
     const response = await getDocs(queryApi);
     const data = response.docs.map<IService>((doc, index) => ({
@@ -106,6 +103,29 @@ export const findServiceUpdate = createAsyncThunk(
   }
 );
 
+export const updateService = createAsyncThunk(
+  "service/updateService",
+  async ({ service, serviceId }: { service: IService; serviceId: string }) => {
+    const querySnapshot = await getDocs(
+      collection(database, collectionService)
+    );
+
+    const docRef = querySnapshot.docs.find((doc) => {
+      return doc.data().ID === serviceId;
+    });
+
+    if (docRef) {
+      await updateDoc(docRef.ref, {
+        id: service.id,
+        name: service.name,
+        describe: service.describe,
+        from: service.from,
+        to: service.to,
+      });
+    }
+  }
+);
+
 export const serviceSlice = createSlice({
   name: "serivce",
   initialState,
@@ -121,7 +141,9 @@ export const serviceSlice = createSlice({
       .addCase(findServiceUpdate.fulfilled, (state, action) => {
         state.dataServiceDetail = { ...action.payload };
       })
-
+      .addCase(updateService.fulfilled, (state, action) => {
+        state.dataServiceDetail = {};
+      })
       .addMatcher<RejectedAction>(
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {

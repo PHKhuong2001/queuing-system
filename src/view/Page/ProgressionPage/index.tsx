@@ -48,6 +48,16 @@ function ProgressionPage() {
           }}
         >
           <Text>Tên dịch vụ</Text>
+          <Select
+            defaultValue="Tất cả"
+            style={{ width: "100%" }}
+            suffixIcon={<DropdownIcon />}
+            options={[
+              { value: "all", label: "Tất cả" },
+              { value: "active", label: "Hoạt động" },
+              { value: "shutDown", label: "Ngưng hoạt động" },
+            ]}
+          />
         </Col>
         <Col
           span={3}

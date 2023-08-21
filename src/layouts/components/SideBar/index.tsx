@@ -1,15 +1,21 @@
 import { Col, Row, Image, Typography, Button } from "antd";
 import images from "@/Shared/assets/images";
 import MenuItem from "./MenuItem";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { SignOutIcon } from "@/Shared/components/icon";
 import { handlerSplitRoute } from "@/Shared/helpers";
+import routesConfig from "@/config/routes";
 function SideBar() {
   const { Paragraph } = Typography;
   const location = useLocation();
   const [iconHover, setIconHover] = useState(false);
   const [iconName, setIconNameHover] = useState("");
+  const navigate = useNavigate();
+  const handlerSignOut = () => {
+    localStorage.removeItem("token");
+    navigate(routesConfig.login);
+  };
 
   return (
     <Col span={24}>
@@ -28,8 +34,6 @@ function SideBar() {
         </Col>
       </Row>
       {MenuItem.map((menu, index) => {
-        console.log(handlerSplitRoute(location.pathname));
-
         return (
           <Row key={index}>
             <Col span={24}>
@@ -64,9 +68,9 @@ function SideBar() {
                 </Paragraph>
                 {menu.hoverMenu ? (
                   <Row className="hover-menu">
-                    {menu.hoverMenu?.map((item) => {
+                    {menu.hoverMenu?.map((item, index) => {
                       return (
-                        <Col span={24}>
+                        <Col span={24} key={index}>
                           <Link
                             className={`hover-menu-link ${
                               location.pathname === item.path ? `active` : ``
@@ -106,6 +110,7 @@ function SideBar() {
             border: "none",
             backgroundColor: "#FFF2E7",
           }}
+          onClick={handlerSignOut}
         >
           Đăng xuất
         </Button>

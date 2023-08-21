@@ -1,7 +1,6 @@
 import images from "@/Shared/assets/images";
 import routesConfig from "@/config/routes";
 import { Col, Form, Image, Typography, Row, Input, Button } from "antd";
-import { Link } from "react-router-dom";
 
 function ForgotPassword() {
   const { Text, Title } = Typography;

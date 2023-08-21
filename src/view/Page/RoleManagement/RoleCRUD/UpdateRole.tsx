@@ -1,16 +1,10 @@
 import { IEquipment } from "@/Shared/interfaces/EquipmentInterface";
-import { useAppDispatch } from "@/app/hooks";
-import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
-import {
-  findEquipmentUpdate,
-  updateEquipment,
-} from "@/features/equipment/equipmentSlice";
+
 import { Header } from "@/layouts";
-import { Button, Col, Form, Input, Row, Select, Typography } from "antd";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Col, Form, Input, Row, Typography } from "antd";
+import { useState } from "react";
+// import { useNavigate, useParams } from "react-router-dom";
 
 export const status = [
   { value: "Tất cả", label: "Tất cả" },
@@ -31,11 +25,9 @@ function RoleUpdate() {
   // const equipment = useSelector(
   //   (state: RootState) => state.equipment.equipmentUpdate
   // );
-  const dispatch = useAppDispatch();
   const [formValue, setFormUpdateValue] = useState(formUpdate);
   const { Title, Text } = Typography;
-  const { id } = useParams();
-  const navigate = useNavigate();
+  // const { id } = useParams();
 
   // useEffect(() => {
   //   // Sử dụng useEffect để cập nhật giá trị formValue khi equipment thay đổi
@@ -49,10 +41,9 @@ function RoleUpdate() {
   // }, [dispatch, id]);
 
   const handlerSubmitFormUpdate = () => {
-    dispatch(updateEquipment({ equiment: formValue, equipmentId: id || "" }));
-    setFormUpdateValue(formUpdate);
-    navigate(routesConfig.equipment);
-    return false;
+    // setFormUpdateValue(formUpdate);
+    // navigate(routesConfig.equipment);
+    // return false;
   };
   return (
     <Col span={24} style={{ height: "100%" }}>

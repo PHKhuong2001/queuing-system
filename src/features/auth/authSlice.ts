@@ -7,7 +7,7 @@ import {
   IAccount,
   InitialStateAuth,
 } from "@/Shared/interfaces/AccountInterface";
-import database from "@/config/firebase-config";
+import database, { storage } from "@/config/firebase-config";
 import {
   collectionAuth,
   dataAccountDetail,
@@ -27,6 +27,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const initialState: InitialStateAuth = {
   dataListAccount,
@@ -38,6 +39,7 @@ const initialState: InitialStateAuth = {
   },
   loading: false,
   success: false,
+  loadingAvatar: {},
 };
 
 export const loginAuth = createAsyncThunk(
@@ -62,6 +64,7 @@ export const loginAuth = createAsyncThunk(
         status: data.status,
         account: data.account,
         password: data.password,
+        image: data.image,
       };
 
       localStorage.setItem("token", JSON.stringify(token));
@@ -70,6 +73,38 @@ export const loginAuth = createAsyncThunk(
       // Handle case when account is not found or password is incorrect
       throw new Error("Invalid email or password");
     }
+  }
+);
+
+export const updateAccountImage = createAsyncThunk(
+  "auth/updateAccountImage",
+  async ({ accountId, imageData }: { accountId: string; imageData: any }) => {
+    const querySnapshot = await getDocs(collection(database, collectionAuth));
+    const docRef = querySnapshot.docs.find((doc) => {
+      return doc.data().account === accountId;
+    });
+    const storageRef = ref(storage, `images/${imageData.name}`);
+    const uploadTask = uploadBytes(storageRef, imageData.originFileObj);
+    await uploadTask;
+    const imageUrl = await getDownloadURL(storageRef);
+    const storedUser = localStorage.getItem("token");
+    const user: IAccount = JSON.parse(storedUser || "");
+    const token: IAccount = {
+      name: user.name,
+      phoneNumber: user.phoneNumber,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+      account: user.account,
+      password: user.password,
+      image: imageUrl,
+    };
+    if (docRef) {
+      await updateDoc(docRef.ref, {
+        image: imageUrl, // Cập nhật trường image
+      });
+    }
+    return token;
   }
 );
 
@@ -209,6 +244,14 @@ const authSlice = createSlice({
     builder
       .addCase(getAllAccount.fulfilled, (state, action) => {
         state.dataListAccount = [...action.payload];
+      })
+      .addCase(updateAccountImage.fulfilled, (state, action) => {
+        localStorage.setItem("token", JSON.stringify(action.payload));
+        const storedUser = localStorage.getItem("token");
+        if (storedUser) {
+          const user: IAccount = JSON.parse(storedUser || "");
+          state.loadingAvatar = user;
+        }
       })
       .addCase(findAccount.fulfilled, (state, action) => {
         state.dataAccountDetail = { ...action.payload };

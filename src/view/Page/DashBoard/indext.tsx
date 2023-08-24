@@ -10,8 +10,45 @@ import {
 import { Header } from "@/layouts";
 import { Col, Row, Select, Typography } from "antd";
 import OverViewDashBoard from "./OverView";
+import { useAppDispatch } from "@/app/hooks";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { useEffect, useState } from "react";
+import {
+  getDataByMonth,
+  getAllProgression,
+  getWeeklyData,
+} from "@/features/progression/progressionSlice";
 function Dashboard() {
+  const progression = useSelector(
+    (state: RootState) => state.progression.dataListProgression
+  );
+  const dataChart = useSelector(
+    (state: RootState) => state.progression.dataChart
+  );
+  const dispatch = useAppDispatch();
+  const [selectTime, setSelectTime] = useState("Ngày");
   const { Text, Title } = Typography;
+  useEffect(() => {
+    dispatch(getAllProgression({}));
+    if (selectTime === "Ngày") {
+      dispatch(getWeeklyData({ dateString: "11/08/2023" }));
+    } else if (selectTime === "Tháng") {
+      dispatch(getDataByMonth({ dateString: "11/08/2023" }));
+    }
+  }, [dispatch, selectTime]);
+  const waitingProgression = progression.filter(
+    (item) => item.status === "Đang chờ"
+  );
+  const haveUseProgression = progression.filter(
+    (item) => item.status === "Đã sử dụng"
+  );
+  const passProgression = progression.filter(
+    (item) => item.status === "Đã bỏ qua"
+  );
+  const handlerSelectMonthDayYear = (e: string) => {
+    setSelectTime(e);
+  };
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row style={{ display: "flex", height: "100%" }}>
@@ -58,7 +95,7 @@ function Dashboard() {
                     color: "#535261",
                   }}
                 >
-                  4.221
+                  {progression.length}
                 </Text>
                 <Text className="percent-wrapper">
                   <ArrowUpIcon></ArrowUpIcon>
@@ -79,7 +116,9 @@ function Dashboard() {
                   <div className="icon-container-green"></div>
                   <HaveUseProgressionIcon></HaveUseProgressionIcon>
                 </div>
-                <Text className="title-col-progression">Số thứ tự đã cấp</Text>
+                <Text className="title-col-progression">
+                  Số thứ tự đã sử dụng
+                </Text>
               </Row>
               <Row className="d-flex align-items-end justify-content-between">
                 <Text
@@ -90,7 +129,7 @@ function Dashboard() {
                     color: "#535261",
                   }}
                 >
-                  4.221
+                  {haveUseProgression.length}
                 </Text>
                 <Text className="percent-wrapper">
                   <ArrowUpIcon></ArrowUpIcon>
@@ -111,7 +150,9 @@ function Dashboard() {
                   <div className="icon-container-orange"></div>
                   <WatingProgressionIcon></WatingProgressionIcon>
                 </div>
-                <Text className="title-col-progression">Số thứ tự đã cấp</Text>
+                <Text className="title-col-progression">
+                  Số thứ tự đang chờ
+                </Text>
               </Row>
               <Row className="d-flex align-items-end justify-content-between">
                 <Text
@@ -122,7 +163,7 @@ function Dashboard() {
                     color: "#535261",
                   }}
                 >
-                  4.221
+                  {waitingProgression.length}
                 </Text>
                 <Text className="percent-wrapper">
                   <ArrowUpIcon></ArrowUpIcon>
@@ -143,7 +184,9 @@ function Dashboard() {
                   <div className="icon-container-red"></div>
                   <HavePassProgressionIcon></HavePassProgressionIcon>
                 </div>
-                <Text className="title-col-progression">Số thứ tự đã cấp</Text>
+                <Text className="title-col-progression">
+                  Số thứ tự đã bỏ qua
+                </Text>
               </Row>
               <Row className="d-flex align-items-end justify-content-between">
                 <Text
@@ -154,7 +197,7 @@ function Dashboard() {
                     color: "#535261",
                   }}
                 >
-                  4.221
+                  {passProgression.length}
                 </Text>
                 <Text className="percent-wrapper">
                   <ArrowUpIcon></ArrowUpIcon>
@@ -214,16 +257,17 @@ function Dashboard() {
                     suffixIcon={<DropdownIcon></DropdownIcon>}
                     defaultValue="Ngày"
                     style={{ width: "6rem" }}
+                    onChange={handlerSelectMonthDayYear}
                     options={[
-                      { label: "Ngày", value: "day" },
-                      { label: "Tháng", value: "month" },
-                      { label: "Năm", value: "year" },
+                      { label: "Ngày", value: "Ngày" },
+                      { label: "Tháng", value: "Tháng" },
+                      { label: "Năm", value: "Năm" },
                     ]}
                   />
                 </Col>
               </Row>
               <Row style={{ marginBottom: "12px" }}>
-                <LineChartComponent></LineChartComponent>
+                <LineChartComponent dataChart={dataChart} />
               </Row>
             </Col>
           </Row>

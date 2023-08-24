@@ -1,52 +1,70 @@
-import { dataListReport } from "@/view/Page/ProgressionPage/ProgressionColumn";
 import {
-  collectionProgression,
+  dataListReport,
+  dataChart,
   dataDetailProgression,
+  collectionProgression,
+  dataListProgression,
+  dataListProgressionOfService,
 } from "@/view/Page/ProgressionPage/ProgressionColumn";
-import { changeDate, changeTime } from "@/Shared/helpers";
+import {
+  changeDate,
+  changeTime,
+  getStartAndEndOfWeekInMonth,
+  getWeekDates,
+  splitDate,
+} from "@/Shared/helpers";
 import {
   FulfilledAction,
   PendingAction,
   RejectedAction,
 } from "@/Shared/interfaces";
 import {
+  ChartMonth,
   IProgression,
   InitialStateProgression,
 } from "@/Shared/interfaces/ProgressionInterface";
 import database from "@/config/firebase-config";
-import { dataListProgression } from "@/view/Page/ProgressionPage/ProgressionColumn";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   DocumentData,
   Query,
+  Timestamp,
   collection,
   getDocs,
   limit,
   query,
   where,
 } from "firebase/firestore";
+import moment from "moment";
 
 const initialState: InitialStateProgression = {
   dataListProgression,
   dataDetailProgression,
   dataListReport,
+  dataChart,
+  dataListProgressionOfService,
 };
 
-export const gettAllProgression = createAsyncThunk(
-  "progression/gettAllProgression",
-  async (_) => {
+export const getAllProgression = createAsyncThunk(
+  "progression/getAllProgression",
+  async (progresion: IProgression) => {
     let queryApi: Query<DocumentData> = collection(
       database,
       collectionProgression
     );
 
-    // if (active) {
-    //   queryApi = query(queryApi, where("activeStatus", "==", active));
-    // }
+    const { nameService, status, powerSupply } = progresion;
+    if (nameService) {
+      queryApi = query(queryApi, where("nameService", "==", nameService));
+    }
 
-    // if (connect) {
-    //   queryApi = query(queryApi, where("connectStatus", "==", connect));
-    // }
+    if (status) {
+      queryApi = query(queryApi, where("status", "==", status));
+    }
+
+    if (powerSupply) {
+      queryApi = query(queryApi, where("powerSupply", "==", powerSupply));
+    }
 
     const response = await getDocs(queryApi);
     const data = response.docs.map<IProgression>((doc, index) => ({
@@ -67,8 +85,31 @@ export const gettAllProgression = createAsyncThunk(
   }
 );
 
-export const gettAllReport = createAsyncThunk(
-  "progression/gettAllReport",
+export const getAllProgressionOfService = createAsyncThunk(
+  "progression/getAllProgressionOfService",
+  async (nameService: string) => {
+    let queryApi: Query<DocumentData> = collection(
+      database,
+      collectionProgression
+    );
+
+    if (nameService) {
+      queryApi = query(queryApi, where("nameService", "==", nameService));
+    }
+
+    const response = await getDocs(queryApi);
+    const data = response.docs.map<IProgression>((doc, index) => ({
+      key: index + 1,
+      stt: doc.data().ID,
+      nameService: doc.data().nameService,
+      status: doc.data().status,
+    }));
+    return data;
+  }
+);
+
+export const getAllReport = createAsyncThunk(
+  "progression/getAllReport",
   async (_) => {
     let queryApi: Query<DocumentData> = collection(
       database,
@@ -133,34 +174,85 @@ export const findProgression = createAsyncThunk(
     console.log(result);
 
     return result;
-    // return {};
   }
 );
 
-// export const findServiceUpdate = createAsyncThunk(
-//   "service/findServiceUpdate",
-//   async (serviceId: string) => {
-//     let queryApi: Query<DocumentData> = collection(database, collectionService);
+export const getDataByMonth = createAsyncThunk(
+  "progression/getDataByMonth",
+  async ({ dateString }: { dateString: string }) => {
+    const { month, year } = splitDate(dateString);
 
-//     if (serviceId) {
-//       queryApi = query(queryApi, where("ID", "==", serviceId));
-//     }
+    const weeksInMonth = getStartAndEndOfWeekInMonth(year, month);
+    const allProgressions: ChartMonth[] = [];
 
-//     const querySnapshot = await getDocs(query(queryApi, limit(1)));
+    // Giới hạn việc lặp lại để chỉ lấy 4 tuần
+    const numberOfWeeksToProcess = Math.min(weeksInMonth.length, 4);
 
-//     const doc = querySnapshot.docs[0];
-//     const data = doc.data();
-//     const result: IService = {
-//       id: data.ID,
-//       name: data.name,
-//       describe: data.describe,
-//       activeStatus: data.activeStatus,
-//       from: data.from,
-//       to: data.to,
-//     };
-//     return result;
-//   }
-// );
+    for (let i = 0; i < numberOfWeeksToProcess; i++) {
+      const week = weeksInMonth[i];
+      const querySnapshot = await getDocs(
+        query(
+          collection(database, collectionProgression),
+          where("grantTime", ">=", Timestamp.fromDate(week.start)),
+          where("grantTime", "<=", Timestamp.fromDate(week.end))
+        )
+      );
+
+      const progressionCountInWeek = querySnapshot.docs.length;
+
+      // Thêm vào danh sách
+      allProgressions.push({
+        weekNumber: i + 1,
+        startDate: changeDate(week.start.getTime() / 1000),
+        endDate: changeDate(week.end.getTime() / 1000),
+        progressionCount: progressionCountInWeek,
+      });
+    }
+
+    return allProgressions;
+  }
+);
+
+export const getWeeklyData = createAsyncThunk(
+  "progression/getWeeklyData",
+  async ({ dateString }: { dateString: string }) => {
+    const { day, month, year } = splitDate(dateString);
+
+    const weekDates = getWeekDates(year, month, day);
+
+    const allProgressions: ChartMonth[] = [];
+
+    for (const date of weekDates) {
+      const querySnapshot = await getDocs(
+        query(
+          collection(database, collectionProgression),
+          where(
+            "grantTime",
+            ">=",
+            Timestamp.fromDate(moment(date, "DD/MM/YYYY").toDate())
+          ),
+          where(
+            "grantTime",
+            "<",
+            Timestamp.fromDate(
+              moment(date, "DD/MM/YYYY").add(1, "days").toDate()
+            )
+          )
+        )
+      );
+
+      const progressionCountInDate = querySnapshot.docs.length;
+
+      // Thêm vào danh sách
+      allProgressions.push({
+        date,
+        progressionCount: progressionCountInDate,
+      });
+    }
+
+    return allProgressions;
+  }
+);
 
 const progressionSlice = createSlice({
   name: "progression",
@@ -168,14 +260,23 @@ const progressionSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(gettAllProgression.fulfilled, (state, action) => {
+      .addCase(getAllProgression.fulfilled, (state, action) => {
         state.dataListProgression = [...action.payload];
       })
-      .addCase(gettAllReport.fulfilled, (state, action) => {
+      .addCase(getAllProgressionOfService.fulfilled, (state, action) => {
+        state.dataListProgressionOfService = [...action.payload];
+      })
+      .addCase(getAllReport.fulfilled, (state, action) => {
         state.dataListReport = [...action.payload];
       })
       .addCase(findProgression.fulfilled, (state, action) => {
         state.dataDetailProgression = { ...action.payload };
+      })
+      .addCase(getDataByMonth.fulfilled, (state, action) => {
+        state.dataChart = action.payload;
+      })
+      .addCase(getWeeklyData.fulfilled, (state, action) => {
+        state.dataChart = action.payload;
       })
       .addMatcher<RejectedAction>(
         (action) => action.type.endsWith("/rejected"),

@@ -1,6 +1,7 @@
 import { TableComponent } from "@/Shared/components";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
+import { getAllProgressionOfService } from "@/features/progression/progressionSlice";
 import { findService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Col, DatePicker, Input, Row, Select, Typography } from "antd";
@@ -18,9 +19,15 @@ function ServiceDetail() {
   const dataServiceDetail = useSelector(
     (state: RootState) => state.service.dataServiceDetail
   );
+  const dataServiceProgression = useSelector(
+    (state: RootState) => state.progression.dataListProgressionOfService
+  );
   const { Title, Text } = Typography;
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getAllProgressionOfService(dataServiceDetail.name || ""));
+  }, [dataServiceDetail, dispatch]);
   useEffect(() => {
     dispatch(findService(id || ""));
   }, [dispatch, id]);
@@ -130,9 +137,15 @@ function ServiceDetail() {
                     span={15}
                     style={{ display: "flex", alignItems: "center", gap: 10 }}
                   >
-                    <Input style={{ width: "33%" }} />
+                    <Input
+                      style={{ width: "33%" }}
+                      value={dataServiceDetail.from}
+                    />
                     <Text>đến</Text>
-                    <Input style={{ width: "33%" }} />
+                    <Input
+                      style={{ width: "33%" }}
+                      value={dataServiceDetail.to}
+                    />
                   </Col>
                 </Row>
                 <Row style={{ marginTop: 10 }}>
@@ -225,7 +238,11 @@ function ServiceDetail() {
               </Row>
               <Row>
                 <Col span={24}>
-                  <TableComponent data={[]} height="350px" width="100%" />
+                  <TableComponent
+                    data={dataServiceProgression}
+                    height="350px"
+                    width="100%"
+                  />
                 </Col>
               </Row>
             </Col>

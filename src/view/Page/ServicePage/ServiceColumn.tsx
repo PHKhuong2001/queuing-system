@@ -45,25 +45,11 @@ export const columnsOffService = [
   },
 ];
 
-export const dataListService: IService[] = [
-  // {
-  //   key: 0,
-  //   maDichVu: "KIO_01",
-  //   tenDichVu: "Kiosk",
-  //   moTa: "Mô tả dịch vụ 1",
-  //   trangThaiHoatDong: "Hoạt động",
-  //   chiTiet: "001",
-  //   capNhat: "001",
-  // },
+export const columnsOffServiceDetail = [
+  { title: "Số thứ tự", dataIndex: "stt", key: "stt" },
+  { title: "Trạng thái", dataIndex: "status", key: "status" },
 ];
 
+export const dataListService: IService[] = [];
+
 export const dataServiceDetail: IService = {};
-// {
-//   key: 0,
-//   maDichVu: "KIO_01",
-//   tenDichVu: "Kiosk",
-//   moTa: "Mô tả dịch vụ 1",
-//   trangThaiHoatDong: "Hoạt động",
-//   chiTiet: "001",
-//   capNhat: "001",
-// },

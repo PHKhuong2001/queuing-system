@@ -5,20 +5,49 @@ import { Col, DatePicker, Input, Row, Select, Typography } from "antd";
 import { useAppDispatch } from "@/app/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { useEffect } from "react";
-import { gettAllProgression } from "@/features/progression/progressionSlice";
+import { useEffect, useState } from "react";
+import { getAllProgression } from "@/features/progression/progressionSlice";
 import { ArrowIcon, DropdownIcon } from "@/Shared/components/icon";
+import { getAllService } from "@/features/serviceSlice/serviceSlice";
+import { getAllEquipment } from "@/features/equipment/equipmentSlice";
+import { IProgression } from "@/Shared/interfaces/ProgressionInterface";
 function ProgressionPage() {
   const datalistProgression = useSelector(
     (state: RootState) => state.progression.dataListProgression
   );
+  const dataService = useSelector(
+    (state: RootState) => state.service.dataListService
+  );
+  const dataEquipment = useSelector((state: RootState) => state.equipment.data);
   const dispatch = useAppDispatch();
   const { Title, Text } = Typography;
-  console.log(datalistProgression);
-
+  const [progresionFilter, setProgressionFilter] = useState<IProgression>({
+    nameService: "",
+    status: "",
+    powerSupply: "",
+  });
   useEffect(() => {
-    dispatch(gettAllProgression());
-  }, [dispatch]);
+    dispatch(getAllProgression(progresionFilter));
+    dispatch(getAllService({}));
+    dispatch(getAllEquipment({ active: "", connect: "" }));
+    console.log(progresionFilter, "re-render");
+  }, [dispatch, progresionFilter]);
+  const listDropdownService = dataService.map((item) => {
+    return { value: item.name, label: item.name };
+  });
+  // Sử dụng Set để loại bỏ các giá trị trùng lặp
+  const uniqueEquipmentNames = new Set(
+    dataEquipment.map((item) => item.tenThietBi)
+  );
+
+  // Chuyển Set thành mảng và tạo danh sách cho dropdown
+  const listDropdownEquipment = Array.from(uniqueEquipmentNames).map(
+    (item) => ({
+      value: item,
+      label: item,
+    })
+  );
+
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -52,10 +81,12 @@ function ProgressionPage() {
             defaultValue="Tất cả"
             style={{ width: "100%" }}
             suffixIcon={<DropdownIcon />}
+            onChange={(e) =>
+              setProgressionFilter((prev) => ({ ...prev, nameService: e }))
+            }
             options={[
-              { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
+              { value: "Tất cả", label: "Tất cả" },
+              ...listDropdownService,
             ]}
           />
         </Col>
@@ -72,10 +103,14 @@ function ProgressionPage() {
             defaultValue="Tất cả"
             style={{ width: "100%" }}
             suffixIcon={<DropdownIcon />}
+            onChange={(e) =>
+              setProgressionFilter((prev) => ({ ...prev, status: e }))
+            }
             options={[
               { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
+              { value: "Đang chờ", label: "Đang chờ" },
+              { value: "Đã sử dụng", label: "Đã sử dụng" },
+              { value: "Đã bỏ qua", label: "Đã bỏ qua" },
             ]}
           />
         </Col>
@@ -92,10 +127,12 @@ function ProgressionPage() {
             defaultValue="Tất cả"
             style={{ width: "100%" }}
             suffixIcon={<DropdownIcon />}
+            onChange={(e) =>
+              setProgressionFilter((prev) => ({ ...prev, powerSupply: e }))
+            }
             options={[
               { value: "all", label: "Tất cả" },
-              { value: "active", label: "Hoạt động" },
-              { value: "shutDown", label: "Ngưng hoạt động" },
+              ...listDropdownEquipment,
             ]}
           />
         </Col>

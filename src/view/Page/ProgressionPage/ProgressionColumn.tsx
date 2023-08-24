@@ -1,4 +1,7 @@
-import { IProgression } from "@/Shared/interfaces/ProgressionInterface";
+import {
+  ChartMonth,
+  IProgression,
+} from "@/Shared/interfaces/ProgressionInterface";
 import routesConfig from "@/config/routes";
 import { Link } from "react-router-dom";
 
@@ -37,18 +40,8 @@ export const columnsOffProgression = [
   },
 ];
 
-export const dataListProgression: IProgression[] = [
-  // {
-  //   key: 0,
-  //   stt: 1,
-  //   nameCustomer: "Lê Huỳnh Ái Vân",
-  //   nameService: "Khám tim mạch",
-  //   grantTime: "14:35 - 07/11/2021",
-  //   expiry: "14:35 - 12/11/2021",
-  //   status: "Đang chờ",
-  //   detail: "001",
-  // },
-];
-
+export const dataListProgression: IProgression[] = [];
 export const dataDetailProgression: IProgression = {};
 export const dataListReport: IProgression[] = [];
+export const dataChart: ChartMonth[] = [];
+export const dataListProgressionOfService: IProgression[] = [];

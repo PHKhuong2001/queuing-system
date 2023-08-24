@@ -1,9 +1,17 @@
-import { IEquipment } from "@/Shared/interfaces/EquipmentInterface";
+import {
+  convertToTimestamp,
+  getCurrentDate,
+  getCurrentTime,
+} from "@/Shared/helpers";
+import { IService } from "@/Shared/interfaces/ServiceInterface";
+import { useAppDispatch } from "@/app/hooks";
 import routesConfig from "@/config/routes";
+import { addNewService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Button, Col, Form, Input, Row, Typography } from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const status = [
   { value: "Tất cả", label: "Tất cả" },
@@ -11,20 +19,41 @@ export const status = [
   { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
 ];
 
-const formCreate: IEquipment = {
-  maThietBi: "",
-  loaiThietBi: "",
-  tenThietBi: "",
-  dangNhap: "",
-  ip: "",
-  password: "",
-  dichVuSuDung: "",
+const formCreate: IService = {
+  id: "",
+  name: "",
+  describe: "",
+  activeStatus: "",
+  createdAt: "",
+  from: "",
+  to: "",
 };
 
 function ServiceCreate() {
   const { Title, Text } = Typography;
-  const [formValue, setFormCreateValue] = useState<IEquipment>(formCreate);
-  const handlerSubmitCreate = () => {};
+  const [formValue, setFormCreateValue] = useState<IService>(formCreate);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const currentDate = getCurrentDate();
+
+  const handlerSubmitCreate = () => {
+    if (
+      formValue.id &&
+      formValue.name &&
+      formValue.describe &&
+      formValue.from &&
+      formValue.to
+    ) {
+      dispatch(
+        addNewService({
+          ...formValue,
+          createdAt: `${currentDate} ${getCurrentTime()}`,
+          activeStatus: "Hoạt động",
+        })
+      );
+      navigate(routesConfig.service);
+    }
+  };
   return (
     <Form onFinish={handlerSubmitCreate}>
       <Col span={24} style={{ height: "100%" }}>
@@ -71,11 +100,11 @@ function ServiceCreate() {
                     <Input
                       style={{ width: "95%", height: 38 }}
                       placeholder="Nhập mã dịch vụ"
-                      // value={formValue.maThietBi}
+                      value={formValue.id}
                       onChange={(e) =>
                         setFormCreateValue((prev) => ({
                           ...prev,
-                          maThietBi: e.target.value,
+                          id: e.target.value,
                         }))
                       }
                     />
@@ -92,16 +121,16 @@ function ServiceCreate() {
                       style={{ marginBottom: "5px" }}
                       className="equipment-input-label"
                     >
-                      Mã thiết bị *
+                      Tên dịch vụ *
                     </Text>
                     <Input
                       style={{ width: "95%", height: 38 }}
-                      placeholder="Nhập mã thiết bị"
-                      value={formValue.maThietBi}
+                      placeholder="Nhập tên dịch vụ"
+                      value={formValue.name}
                       onChange={(e) =>
                         setFormCreateValue((prev) => ({
                           ...prev,
-                          maThietBi: e.target.value,
+                          name: e.target.value,
                         }))
                       }
                     />
@@ -109,15 +138,15 @@ function ServiceCreate() {
                 </Row>
               </Col>
               <Col span={12} className="equipment-create-group">
-                <Text className="equipment-input-label">Loại thiết bị *</Text>
+                <Text className="equipment-input-label">Mô tả *</Text>
                 <Input.TextArea
                   style={{ width: "100%", height: 132 }}
                   placeholder="Nhập mô tả"
-                  value={formValue.maThietBi}
+                  value={formValue.describe}
                   onChange={(e) =>
                     setFormCreateValue((prev) => ({
                       ...prev,
-                      maThietBi: e.target.value,
+                      describe: e.target.value,
                     }))
                   }
                 />
@@ -135,9 +164,27 @@ function ServiceCreate() {
                 span={4}
                 style={{ display: "flex", alignItems: "center", gap: 10 }}
               >
-                <Input style={{ width: "35%" }} />
+                <Input
+                  style={{ width: "35%" }}
+                  value={formValue.from}
+                  onChange={(e) =>
+                    setFormCreateValue((prev) => ({
+                      ...prev,
+                      from: e.target.value,
+                    }))
+                  }
+                />
                 <Text>đến</Text>
-                <Input style={{ width: "35%" }} />
+                <Input
+                  style={{ width: "35%" }}
+                  value={formValue.to}
+                  onChange={(e) =>
+                    setFormCreateValue((prev) => ({
+                      ...prev,
+                      to: e.target.value,
+                    }))
+                  }
+                />
               </Col>
             </Row>
             <Row style={{ marginTop: 10 }}>

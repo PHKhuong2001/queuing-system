@@ -3,7 +3,7 @@ import { ArrowIcon } from "@/Shared/components/icon";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
-import { gettAllReport } from "@/features/progression/progressionSlice";
+import { getAllReport } from "@/features/progression/progressionSlice";
 import { Header } from "@/layouts";
 import { Col, DatePicker, Row, Typography } from "antd";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ function ReportPage() {
   );
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(gettAllReport());
+    dispatch(getAllReport());
   }, [dispatch]);
   const { Text } = Typography;
   return (

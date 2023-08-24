@@ -1,10 +1,14 @@
+import { handlerSplitRoute } from "@/Shared/helpers";
 import routesConfig from "@/config/routes";
 import { columnsOffAccount } from "@/view/Page/AccountManagement/AccountColumn";
 import { columnsOffEquipment } from "@/view/Page/Equipment/EquipmentColumn";
 import { columnsOffProgression } from "@/view/Page/ProgressionPage/ProgressionColumn";
 import { columnsOffReport } from "@/view/Page/ReportPage/ReportColumn";
 import { columnsOffRole } from "@/view/Page/RoleManagement/RoleColumn";
-import { columnsOffService } from "@/view/Page/ServicePage/ServiceColumn";
+import {
+  columnsOffService,
+  columnsOffServiceDetail,
+} from "@/view/Page/ServicePage/ServiceColumn";
 import { Table, Pagination } from "antd";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -38,7 +42,7 @@ const TableComponent = ({ data, height = "400px", width }: TableProps) => {
   };
 
   const handlerColumn = () => {
-    switch (location.pathname) {
+    switch (handlerSplitRoute(location.pathname)) {
       case routesConfig.equipment:
         return columnsOffEquipment;
       case routesConfig.service:
@@ -51,6 +55,8 @@ const TableComponent = ({ data, height = "400px", width }: TableProps) => {
         return columnsOffRole;
       case routesConfig.accountManagement:
         return columnsOffAccount;
+      case handlerSplitRoute(routesConfig.serviceDetail):
+        return columnsOffServiceDetail;
       default:
         return;
     }

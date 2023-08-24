@@ -17,6 +17,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   DocumentData,
   Query,
+  Timestamp,
+  addDoc,
   collection,
   getDocs,
   limit,
@@ -24,19 +26,44 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import moment from "moment";
+import { convertToTimestamp } from "@/Shared/helpers";
 
 const initialState: InitialStateService = {
   dataListService,
   dataServiceDetail,
 };
 
-export const gettAllService = createAsyncThunk(
-  "service/gettAllService",
-  async (active: string) => {
+export const getAllService = createAsyncThunk(
+  "service/getAllService",
+  async ({
+    active,
+    from,
+    to,
+  }: {
+    active?: string;
+    from?: string;
+    to?: string;
+  }) => {
     let queryApi: Query<DocumentData> = collection(database, collectionService);
 
     if (active) {
       queryApi = query(queryApi, where("activeStatus", "==", active));
+    }
+
+    if (from && to) {
+      const startTimestamp = Timestamp.fromMillis(
+        moment(from, "DD/MM/YYYY").startOf("day").valueOf()
+      );
+      const endTimestamp = Timestamp.fromMillis(
+        moment(to, "DD/MM/YYYY").endOf("day").valueOf()
+      );
+
+      queryApi = query(
+        queryApi,
+        where("createdAt", ">=", startTimestamp),
+        where("createdAt", "<=", endTimestamp)
+      );
     }
 
     const response = await getDocs(queryApi);
@@ -126,13 +153,31 @@ export const updateService = createAsyncThunk(
   }
 );
 
+export const addNewService = createAsyncThunk(
+  "service/addNewService",
+  async (service: IService) => {
+    const newService = {
+      ...service,
+      ID: service.id,
+      createdAt: convertToTimestamp(service.createdAt || ""),
+    };
+    try {
+      const collectionRef = collection(database, collectionService);
+      // Thêm dữ liệu mới vào Firestore
+      await addDoc(collectionRef, newService);
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const serviceSlice = createSlice({
   name: "serivce",
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(gettAllService.fulfilled, (state, action) => {
+      .addCase(getAllService.fulfilled, (state, action) => {
         state.dataListService = [...action.payload];
       })
       .addCase(findService.fulfilled, (state, action) => {

@@ -1,7 +1,8 @@
+import { getDayOfWeek } from "@/Shared/helpers";
+import { ChartMonth } from "@/Shared/interfaces/ProgressionInterface";
 import { Chart, LineElement } from "chart.js/auto";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-
 Chart.register(LineElement);
 
 interface DataSets {
@@ -36,33 +37,30 @@ const chart = {
   ],
 };
 interface LineChartProps {
-  dataChart?: [];
+  dataChart: ChartMonth[];
 }
 
-const dataList = [
-  { day: "1", amount: "1500" },
-  { day: "2", amount: "3200" },
-  { day: "3", amount: "3100" },
-  { day: "4", amount: "3300" },
-  { day: "5", amount: "3200" },
-  { day: "6", amount: "2900" },
-  { day: "7", amount: "4800" },
-  { day: "8", amount: "5000" },
-  { day: "9", amount: "3000" },
-  { day: "10", amount: "3100" },
-  { day: "11", amount: "3000" },
-  { day: "12", amount: "6000" },
-];
 const LineChartComponent = ({ dataChart }: LineChartProps) => {
   const [chartData, setChartData] = useState<ChartData>(chart);
-
   useEffect(() => {
     setChartData({
-      labels: dataList.map((month) => month.day),
+      labels: dataChart.map((item) => {
+        if (item.weekNumber) {
+          return item.weekNumber.toString();
+        } else if (item.date) {
+          return getDayOfWeek(item.date);
+        }
+        return "";
+      }),
       datasets: [
         {
           label: "",
-          data: dataList.map((month) => month.amount),
+          data: dataChart.map((item) => {
+            if (item.progressionCount) {
+              return item.progressionCount.toString();
+            }
+            return "";
+          }),
           tension: 0.5,
           borderColor: "#5185F7",
           pointBorderColor: "transparent",
@@ -72,7 +70,7 @@ const LineChartComponent = ({ dataChart }: LineChartProps) => {
         },
       ],
     });
-  }, []);
+  }, [dataChart]);
 
   const createLinearGradient = () => {
     const ctx = document.createElement("canvas").getContext("2d");
@@ -89,7 +87,7 @@ const LineChartComponent = ({ dataChart }: LineChartProps) => {
     scales: {
       y: {
         ticks: {
-          stepSize: 1000,
+          stepSize: 100,
         },
       },
       x: {

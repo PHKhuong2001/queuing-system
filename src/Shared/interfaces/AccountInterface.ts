@@ -7,6 +7,7 @@ export interface IAccount {
   phoneNumber?: string;
   status?: string;
   role?: string;
+  image?: string;
   update?: string;
 }
 export interface InitialStateAuth {
@@ -19,4 +20,5 @@ export interface InitialStateAuth {
     account: boolean;
     password: boolean;
   };
+  loadingAvatar: IAccount;
 }

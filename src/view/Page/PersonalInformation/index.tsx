@@ -1,8 +1,70 @@
-import { Avatar, Col, Input, Row, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Input,
+  Row,
+  Typography,
+  Upload,
+  UploadProps,
+  message,
+} from "antd";
 import { Header } from "@/layouts";
-import { UserOutlined } from "@ant-design/icons";
+import { IAccount } from "@/Shared/interfaces/AccountInterface";
+import { useEffect, useState } from "react";
+import { UploadOutlined } from "@ant-design/icons";
+import { useAppDispatch } from "@/app/hooks";
+import { updateAccountImage } from "@/features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 function PersonalInformation() {
+  const uploading = useSelector((state: RootState) => state.auth.loadingAvatar);
+  const [tokens, setTokens] = useState<IAccount | undefined>(() => {
+    const storedUser = localStorage.getItem("token");
+    if (storedUser) {
+      const user: IAccount = JSON.parse(storedUser || "");
+      return user;
+    } else {
+      return undefined;
+    }
+  });
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (uploading.account) {
+      setTokens(uploading);
+    }
+  }, [uploading]);
+
+  const handleImageUpload = (imageFile: any) => {
+    if (!imageFile) {
+      message.error("No image selected.");
+      return;
+    }
+
+    try {
+      dispatch(
+        updateAccountImage({
+          accountId: tokens?.account || "",
+          imageData: imageFile.fileList[0],
+        })
+      );
+    } catch (error) {
+      console.error("Error uploading image and updating Firestore:", error);
+    }
+  };
+
+  const props: UploadProps = {
+    beforeUpload: (file: any) => {
+      const isImage = file.type.startsWith("image/");
+      if (!isImage) {
+        message.error(`${file.name} is not an image file`);
+      }
+      return false;
+    },
+  };
+
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -12,19 +74,25 @@ function PersonalInformation() {
       </Row>
       <Row className="information-wrapper">
         <Col
+          className="d-flex align-items-center flex-direction-column position-relative"
           span={5}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
         >
-          <Avatar icon={<UserOutlined />} size={200} />
+          <Avatar src={tokens?.image} size={200} />
           <Typography.Title
             style={{ fontSize: "1.2rem", margin: "10px 0 0 0" }}
           >
-            Lê Quỳnh Ái Vân
+            {tokens?.name}
           </Typography.Title>
+          <Upload
+            className="position-absolute absolute-upload"
+            showUploadList={false}
+            {...props}
+            onChange={handleImageUpload}
+            action="http://localhost:3000/information"
+          >
+            <Button icon={<UploadOutlined />}></Button>
+          </Upload>
+          {/* <input type="file" onChange={handleImageUpload} /> */}
         </Col>
         <Col
           span={9}
@@ -43,7 +111,7 @@ function PersonalInformation() {
               </Typography.Text>
               <Input
                 disabled
-                value="Lê Quỳnh Ái Vân"
+                value={tokens?.name}
                 className="input-information"
               />
             </Col>
@@ -55,7 +123,7 @@ function PersonalInformation() {
               </Typography.Text>
               <Input
                 disabled
-                value="Lê Quỳnh Ái Vân"
+                value={tokens?.phoneNumber}
                 className="input-information"
               />
             </Col>
@@ -65,7 +133,7 @@ function PersonalInformation() {
               <Typography.Text className="label-input">Email: </Typography.Text>
               <Input
                 disabled
-                value="Lê Quỳnh Ái Vân"
+                value={tokens?.email}
                 className="input-information"
               />
             </Col>
@@ -84,11 +152,11 @@ function PersonalInformation() {
           <Row>
             <Col span={24} className="rese-col-information">
               <Typography.Text className="label-input">
-                Tên người dùng
+                Tên đăng nhập
               </Typography.Text>
               <Input
                 disabled
-                value="Lê Quỳnh Ái Vân"
+                value={tokens?.account}
                 className="input-information"
               />
             </Col>
@@ -96,21 +164,23 @@ function PersonalInformation() {
           <Row>
             <Col span={24} className="rese-col-information">
               <Typography.Text className="label-input">
-                Số điện thoại
+                Mật khẩu
               </Typography.Text>
               <Input
                 disabled
-                value="Lê Quỳnh Ái Vân"
+                value={tokens?.password}
                 className="input-information"
               />
             </Col>
           </Row>
           <Row>
             <Col span={24} className="rese-col-information">
-              <Typography.Text className="label-input">Email: </Typography.Text>
+              <Typography.Text className="label-input">
+                Vai trò:
+              </Typography.Text>
               <Input
                 disabled
-                value="Lê Quỳnh Ái Vân"
+                value={tokens?.role}
                 className="input-information"
               />
             </Col>

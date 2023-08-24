@@ -9,9 +9,6 @@ import {
 
 import { PrivateRouteType } from "@/Shared/interfaces";
 import routesConfig from "@/config/routes";
-import EquipmentCreate from "@/view/Page/Equipment/EquipmentCRUD/CreateEquipment";
-import EquipmentDetail from "@/view/Page/Equipment/EquipmentCRUD/DetailEquipment";
-import EquipmentUpdate from "@/view/Page/Equipment/EquipmentCRUD/UpdateEquipment";
 import ServiceCreate from "@/view/Page/ServicePage/ServiceCRUD/CreateService";
 import ServiceDetail from "@/view/Page/ServicePage/ServiceCRUD/DetailService";
 import ServiceUpdate from "@/view/Page/ServicePage/ServiceCRUD/UpdateService";
@@ -42,17 +39,17 @@ const privateRoute: PrivateRouteType[] = [
   },
   {
     path: routesConfig.equipmentCreate,
-    component: <EquipmentCreate></EquipmentCreate>,
+    component: <Equipment></Equipment>,
     layout: DefaultLayout,
   },
   {
     path: routesConfig.equipmentDetail,
-    component: <EquipmentDetail></EquipmentDetail>,
+    component: <Equipment></Equipment>,
     layout: DefaultLayout,
   },
   {
     path: routesConfig.equipmentUpdate,
-    component: <EquipmentUpdate></EquipmentUpdate>,
+    component: <Equipment></Equipment>,
     layout: DefaultLayout,
   },
   {

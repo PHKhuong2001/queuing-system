@@ -62,3 +62,14 @@
     color: #ffffff !important;
   }
 }
+
+.absolute-upload {
+  right: 30px;
+  bottom: 25px;
+  button {
+    background-color: #ff7506;
+    border-radius: 50%;
+    width: 45px !important;
+    height: 45px;
+  }
+}

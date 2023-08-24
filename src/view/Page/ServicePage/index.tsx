@@ -3,7 +3,7 @@ import { DropdownIcon } from "@/Shared/components/icon";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
-import { gettAllService } from "@/features/serviceSlice/serviceSlice";
+import { getAllService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Col, DatePicker, Input, Row, Select, Typography } from "antd";
 import { useEffect, useState } from "react";
@@ -13,11 +13,17 @@ function ServicePage() {
     (state: RootState) => state.service.dataListService
   );
   const [activeStatus, setActiveStatus] = useState<string>("");
+  const [formTo, setFromTo] = useState({
+    from: "",
+    to: "",
+  });
   const dispatch = useAppDispatch();
   const { Title, Text } = Typography;
   useEffect(() => {
-    dispatch(gettAllService(activeStatus));
-  }, [dispatch, activeStatus]);
+    dispatch(
+      getAllService({ active: activeStatus, from: formTo.from, to: formTo.to })
+    );
+  }, [dispatch, activeStatus, formTo]);
 
   const handlerSelectActive = (e: string) => {
     if (e === "Tất cả") {
@@ -77,13 +83,19 @@ function ServicePage() {
             <Col span={10}>
               <DatePicker
                 style={{ width: "90%", height: 38 }}
-                // onChange={handleChangeSelectStatus}
+                onChange={(date: any, dateString: string) =>
+                  setFromTo((prev) => ({ ...prev, from: dateString }))
+                }
+                format="DD/MM/YYYY"
               />
             </Col>
             <Col span={10}>
               <DatePicker
                 style={{ width: "90%", height: 38 }}
-                // onChange={handleChangeSelectStatus}
+                onChange={(date: any, dateString: string) =>
+                  setFromTo((prev) => ({ ...prev, to: dateString }))
+                }
+                format="DD/MM/YYYY"
               />
             </Col>
           </Row>

@@ -21,4 +21,5 @@ export interface InitialStateAuth {
     password: boolean;
   };
   loadingAvatar: IAccount;
+  loadingResetPassword: boolean;
 }

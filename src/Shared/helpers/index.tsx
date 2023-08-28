@@ -19,6 +19,9 @@ export const changeDate = (time: any) => {
 export const changeTime = (time: any) => {
   return moment.unix(time).format("hh:mm");
 };
+export const changeFullTime = (time: any) => {
+  return moment.unix(time).format("hh:mm:ss");
+};
 
 export const getStartAndEndOfWeekInMonth = (year: any, month: any) => {
   const firstDayOfMonth = new Date(year, month - 1, 1);

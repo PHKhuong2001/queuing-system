@@ -2,7 +2,7 @@ const routesConfig = {
   // Route Auth
   login: "/",
   forgotPassword: "/forgot-password",
-  changePassword: "/reset-password/:oobCode",
+  changePassword: "/reset-password",
   personalInformation: "/information",
 
   // Route Dashboard

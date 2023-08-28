@@ -4,6 +4,7 @@ import equipmentReducer from "../features/equipment/equipmentSlice";
 import serviceReducer from "../features/serviceSlice/serviceSlice";
 import progressionReducer from "../features/progression/progressionSlice";
 import roleReducer from "../features/role/roleSlice";
+import activityReducer from "../features/activity/activitySlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     service: serviceReducer,
     progression: progressionReducer,
     role: roleReducer,
+    activity: activityReducer,
   },
 });
 

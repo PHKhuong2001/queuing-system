@@ -29,7 +29,7 @@ export const columnsOffReport: CustomColumnType[] = [
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const inputRef = useRef(null);
       return (
-        <div style={{ padding: 8 }}>
+        <div style={{ padding: 8, width: "200px" }}>
           <Select
             mode="multiple"
             style={{ width: "100%", marginBottom: 8, display: "block" }}

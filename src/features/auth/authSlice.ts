@@ -14,7 +14,7 @@ import {
   dataAccountUpdate,
   dataListAccount,
 } from "@/view/Page/AccountManagement/AccountColumn";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   DocumentData,
   Query,
@@ -40,6 +40,7 @@ const initialState: InitialStateAuth = {
   loading: false,
   success: false,
   loadingAvatar: {},
+  loadingResetPassword: false,
 };
 
 export const loginAuth = createAsyncThunk(
@@ -68,6 +69,35 @@ export const loginAuth = createAsyncThunk(
       };
 
       localStorage.setItem("token", JSON.stringify(token));
+      return token;
+    } else {
+      // Handle case when account is not found or password is incorrect
+      throw new Error("Invalid email or password");
+    }
+  }
+);
+
+export const forGotPassword = createAsyncThunk(
+  "auth/forGotPassword",
+  async (email: string) => {
+    const q = query(
+      collection(database, collectionAuth),
+      where("email", "==", email)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const data = querySnapshot.docs[0].data();
+      const token = {
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        role: data.role,
+        status: data.status,
+        account: data.account,
+        password: data.password,
+        image: data.image,
+      };
       return token;
     } else {
       // Handle case when account is not found or password is incorrect
@@ -239,11 +269,16 @@ export const updateAccount = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    resetForgot(state, action: PayloadAction<string>) {},
+  },
   extraReducers(builder) {
     builder
       .addCase(getAllAccount.fulfilled, (state, action) => {
         state.dataListAccount = [...action.payload];
+      })
+      .addCase(forGotPassword.fulfilled, (state, action) => {
+        state.loadingResetPassword = true;
       })
       .addCase(updateAccountImage.fulfilled, (state, action) => {
         localStorage.setItem("token", JSON.stringify(action.payload));

@@ -4,6 +4,7 @@ import {
   ProgressionIcon,
   ReportIcon,
   ServiceIcon,
+  SettingIcon,
 } from "@/Shared/components/icon";
 import { handlerSplitRoute } from "@/Shared/helpers";
 import { ISideBarItem } from "@/Shared/interfaces/SideBarInterface";
@@ -60,9 +61,9 @@ const MenuItem: ISideBarItem[] = [
     path: routesConfig.report,
   },
   {
-    icon: <DashboardIcon />,
-    iconActive: <DashboardIcon fillColor="white" />,
-    iconHover: <DashboardIcon fillColor="#ff7506" />,
+    icon: <SettingIcon />,
+    iconActive: <SettingIcon fillColor="white" />,
+    iconHover: <SettingIcon fillColor="#ff7506" />,
     name: "Cài đặt hệ thống",
     hoverMenu: [
       {

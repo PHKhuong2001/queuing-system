@@ -20,6 +20,7 @@ import RoleManagementPage from "@/view/Page/RoleManagement";
 import RoleCreate from "@/view/Page/RoleManagement/RoleCRUD/CreateRole";
 import RoleUpdate from "@/view/Page/RoleManagement/RoleCRUD/UpdateRole";
 import { DefaultLayout } from "@/layouts";
+import ActivityLog from "@/view/Page/ActivityLog";
 
 const privateRoute: PrivateRouteType[] = [
   {
@@ -120,7 +121,7 @@ const privateRoute: PrivateRouteType[] = [
   },
   {
     path: routesConfig.userLogs,
-    component: <AccountManagementPage></AccountManagementPage>,
+    component: <ActivityLog></ActivityLog>,
     layout: DefaultLayout,
   },
 ];

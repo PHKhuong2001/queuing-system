@@ -1,6 +1,7 @@
 import { handlerSplitRoute } from "@/Shared/helpers";
 import routesConfig from "@/config/routes";
 import { columnsOffAccount } from "@/view/Page/AccountManagement/AccountColumn";
+import { columnsOffActivity } from "@/view/Page/ActivityLog/ActivityColumn";
 import { columnsOffEquipment } from "@/view/Page/Equipment/EquipmentColumn";
 import { columnsOffProgression } from "@/view/Page/ProgressionPage/ProgressionColumn";
 import { columnsOffReport } from "@/view/Page/ReportPage/ReportColumn";
@@ -57,6 +58,8 @@ const TableComponent = ({ data, height = "400px", width }: TableProps) => {
         return columnsOffAccount;
       case handlerSplitRoute(routesConfig.serviceDetail):
         return columnsOffServiceDetail;
+      case routesConfig.userLogs:
+        return columnsOffActivity;
       default:
         return;
     }

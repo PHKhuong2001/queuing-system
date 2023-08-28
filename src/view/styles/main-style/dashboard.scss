@@ -34,12 +34,21 @@
   padding: 0 15px 0 15px;
 }
 .overview-card {
-  height: 3.8rem;
+  height: 4.1rem;
   border-radius: 12px;
   background: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
-
+.progress-translate {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.display-none-progress-text {
+  .ant-progress-text {
+    display: none;
+  }
+}
 .col-progression-dashboard {
   background: #ffffff;
   height: 110px;

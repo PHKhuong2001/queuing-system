@@ -30,7 +30,6 @@ function RoleManagementPage() {
         style={{
           paddingLeft: "2rem",
           paddingRight: "5rem",
-          marginTop: "15px",
           display: "flex",
           justifyContent: "flex-end",
         }}
@@ -48,7 +47,6 @@ function RoleManagementPage() {
             className="search-antd"
             style={{ width: "100%" }}
             placeholder="Nhập từ khoá"
-            // onChange={handleChangeSelectStatus}
           />
         </Col>
       </Row>

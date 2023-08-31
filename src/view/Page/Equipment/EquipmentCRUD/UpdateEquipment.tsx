@@ -18,13 +18,13 @@ export const status = [
   { value: "Ngưng hoạt động", label: "Ngưng hoạt động" },
 ];
 const formUpdate: IEquipment = {
-  maThietBi: "",
-  loaiThietBi: "",
-  tenThietBi: "",
-  dangNhap: "",
+  ID: "",
+  type: "",
+  name: "",
+  signIn: "",
   ip: "",
   password: "",
-  dichVuSuDung: "",
+  service: "",
 };
 
 function EquipmentUpdate() {
@@ -60,16 +60,16 @@ function EquipmentUpdate() {
 
   const handleRemoveService = (index: any) => {
     const updatedServices = [
-      ...parseServiceStringToArray(formValue.dichVuSuDung || ""),
+      ...parseServiceStringToArray(formValue.service || ""),
     ];
     updatedServices.splice(index, 1);
     setFormUpdateValue((prev) => ({
       ...prev,
-      dichVuSuDung: updatedServices.join(", "),
+      service: updatedServices.join(", "),
     }));
   };
 
-  console.log(formValue.dichVuSuDung);
+  console.log(formValue.service);
 
   return (
     <Form onFinish={handlerSubmitFormUpdate}>
@@ -92,11 +92,11 @@ function EquipmentUpdate() {
               <Input
                 style={{ width: "95%", height: 38 }}
                 placeholder="Nhập mã thiết bị"
-                value={formValue.maThietBi}
+                value={formValue.ID}
                 onChange={(e) =>
                   setFormUpdateValue((prev) => ({
                     ...prev,
-                    maThietBi: e.target.value,
+                    ID: e.target.value,
                   }))
                 }
               />
@@ -111,11 +111,11 @@ function EquipmentUpdate() {
                   { value: "Kiosk", label: "Kiosk" },
                   { value: "Display counter", label: "Display counter" },
                 ]}
-                value={formValue.loaiThietBi}
+                value={formValue.type}
                 onChange={(e) =>
                   setFormUpdateValue((prev) => ({
                     ...prev,
-                    loaiThietBi: e,
+                    type: e,
                   }))
                 }
               />
@@ -133,11 +133,11 @@ function EquipmentUpdate() {
               <Input
                 style={{ width: "95%", height: 38 }}
                 placeholder="Nhập tên thiết bị"
-                value={formValue.tenThietBi}
+                value={formValue.name}
                 onChange={(e) =>
                   setFormUpdateValue((prev) => ({
                     ...prev,
-                    tenThietBi: e.target.value,
+                    name: e.target.value,
                   }))
                 }
               />
@@ -147,11 +147,11 @@ function EquipmentUpdate() {
               <Input
                 style={{ width: "95%", height: 38 }}
                 placeholder="Nhập tên đăng nhập"
-                value={formValue.dangNhap}
+                value={formValue.signIn}
                 onChange={(e) =>
                   setFormUpdateValue((prev) => ({
                     ...prev,
-                    dangNhap: e.target.value,
+                    signIn: e.target.value,
                   }))
                 }
               />
@@ -203,7 +203,7 @@ function EquipmentUpdate() {
             <Col span={24} className="equipment-create-group">
               <Text className="equipment-input-label">Dịch vụ sử dụng: *</Text>
               <ul className="list-service d-flex ">
-                {formValue.dichVuSuDung?.split(",").map((item, index) => {
+                {formValue.service?.split(",").map((item, index) => {
                   return (
                     <li className="list-service-item d-flex align-items-center justify-content-between">
                       <Text style={{ fontSize: "0.8rem", color: "#ffffff" }}>

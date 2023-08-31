@@ -1,4 +1,4 @@
-import { Breadcrumb, Col, Row } from "antd";
+import { Col, Row } from "antd";
 import { useLocation } from "react-router-dom";
 import routesConfig from "@/config/routes";
 import InformationComponent from "./Information";
@@ -11,21 +11,21 @@ function Header() {
         height: "3.5rem",
         display: "flex",
         alignItems: "center",
-        // borderBottom: "1px solid black",
         width: "100%",
         paddingLeft: "32px",
         paddingRight: "3rem",
       }}
     >
       <Col span={12}>
-        <Breadcrumb
+        {/* <Breadcrumb
           separator=">"
           items={[
             {
               title: "Home",
             },
           ]}
-        />
+        /> */}
+        <></>
       </Col>
       {location.pathname === routesConfig.dashboard ? (
         <></>

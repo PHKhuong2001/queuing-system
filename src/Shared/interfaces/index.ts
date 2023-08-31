@@ -12,3 +12,8 @@ export interface PrivateRouteType {
   layout?: ComponentState;
   exact?: boolean;
 }
+
+export interface ITimestamp {
+  seconds: number;
+  nanoseconds: number;
+}

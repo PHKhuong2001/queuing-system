@@ -1,7 +1,14 @@
+import {
+  convertToTimestamp,
+  getCurrentDate,
+  getCurrentTime,
+  getLocalStorageUser,
+} from "@/Shared/helpers";
 import { IService } from "@/Shared/interfaces/ServiceInterface";
 import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
+import { addNewActivity } from "@/features/activity/activitySlice";
 import {
   findServiceUpdate,
   updateService,
@@ -34,6 +41,7 @@ function ServiceUpdate() {
   const [formNewUpdate, setFormNewUpdate] = useState(formUpdate);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = getLocalStorageUser();
 
   useEffect(() => {
     if (dataServiceUpdate) {
@@ -53,6 +61,15 @@ function ServiceUpdate() {
       formNewUpdate.to
     ) {
       dispatch(updateService({ service: formNewUpdate, serviceId: id || "" }));
+      dispatch(
+        addNewActivity({
+          account: user.account,
+          executionTime: convertToTimestamp(
+            `${getCurrentDate()} ${getCurrentTime()}`
+          ),
+          operations: `Cập nhật dịch vụ ${formNewUpdate.id}`,
+        })
+      );
       navigate(routesConfig.service);
     }
   };

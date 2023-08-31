@@ -1,8 +1,21 @@
 import ModalAddProgression from "@/Shared/components/Modal/ModalProgression";
 import { DropdownIcon } from "@/Shared/components/icon";
+import {
+  convertToTimestamp,
+  getCurrentDate,
+  getCurrentTime,
+  getLocalStorageUser,
+} from "@/Shared/helpers";
+import { useAppDispatch } from "@/app/hooks";
+import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
+import { addNewActivity } from "@/features/activity/activitySlice";
+import { addNewProgression } from "@/features/progression/progressionSlice";
+import { getAllService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Button, Col, Form, Row, Select, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export const status = [
   { value: "Tất cả", label: "Tất cả" },
@@ -11,8 +24,47 @@ export const status = [
 ];
 
 function ProgressionCreate() {
+  const dataService = useSelector(
+    (state: RootState) => state.service.dataListService
+  );
+  const dispatch = useAppDispatch();
+  const user = getLocalStorageUser();
   const { Title, Text } = Typography;
-  const handlerSubmitCreate = () => {};
+  useEffect(() => {
+    dispatch(getAllService({}));
+  }, [dispatch]);
+  const listDropdownService = dataService.map((item) => {
+    return { value: item.name, label: item.name };
+  });
+  const [selectService, setSelectService] = useState("");
+  const handlerSubmitCreate = () => {
+    const dataIdService = dataService.find(
+      (item) => item.name === selectService
+    );
+    const id = { ...dataIdService };
+    if (id.id && selectService) {
+      dispatch(
+        addNewProgression({
+          service: selectService,
+          serviceId: id.id || "",
+          currentTime: `${getCurrentDate()} ${getCurrentTime()}`,
+        })
+      );
+      dispatch(
+        addNewActivity({
+          account: user.account,
+          executionTime: convertToTimestamp(
+            `${getCurrentDate()} ${getCurrentTime()}`
+          ),
+          operations: `Cấp số mới với dịch vụ ${selectService}`,
+        })
+      );
+    } else {
+      console.log(id);
+    }
+    return false;
+  };
+
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -72,6 +124,8 @@ function ProgressionCreate() {
                   placeholder="chọn dịch vụ"
                   suffixIcon={<DropdownIcon></DropdownIcon>}
                   className="equipment-select"
+                  options={listDropdownService}
+                  onChange={(e) => setSelectService(e)}
                 />
               </Col>
             </Row>
@@ -89,7 +143,7 @@ function ProgressionCreate() {
               >
                 <Button
                   type="link"
-                  href={routesConfig.service}
+                  href={routesConfig.progression}
                   className="button-cancel"
                 >
                   Huỷ bỏ

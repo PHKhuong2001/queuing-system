@@ -14,7 +14,7 @@ import {
   dataAccountUpdate,
   dataListAccount,
 } from "@/view/Page/AccountManagement/AccountColumn";
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   DocumentData,
   Query,
@@ -33,6 +33,7 @@ const initialState: InitialStateAuth = {
   dataListAccount,
   dataAccountDetail,
   dataAccountUpdate,
+  dataAccountResetPassword: {},
   loginValid: {
     account: true,
     password: true,
@@ -106,6 +107,23 @@ export const forGotPassword = createAsyncThunk(
   }
 );
 
+export const updateAccountPassword = createAsyncThunk(
+  "auth/updateAccountPassword",
+  async ({ email, password }: { email: string; password: string }) => {
+    const querySnapshot = await getDocs(collection(database, collectionAuth));
+
+    const docRef = querySnapshot.docs.find((doc) => {
+      return doc.data().email === email;
+    });
+
+    if (docRef) {
+      await updateDoc(docRef.ref, {
+        password: password,
+      });
+    }
+  }
+);
+
 export const updateAccountImage = createAsyncThunk(
   "auth/updateAccountImage",
   async ({ accountId, imageData }: { accountId: string; imageData: any }) => {
@@ -138,46 +156,14 @@ export const updateAccountImage = createAsyncThunk(
   }
 );
 
-export const emailFindChangePassword = createAsyncThunk(
-  "auth/emailFindChangePassword",
-  async (credentials: IAccount) => {
-    const { email } = credentials;
-
-    const q = query(
-      collection(database, collectionAuth),
-      where("email", "==", email)
-    );
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const data = querySnapshot.docs[0].data();
-      const token = {
-        name: data.name,
-        phoneNumber: data.phoneNumber,
-        email: data.email,
-        role: data.role,
-        status: data.status,
-        account: data.account,
-        password: data.password,
-      };
-
-      localStorage.setItem("token", JSON.stringify(token));
-      return token;
-    } else {
-      // Handle case when account is not found or password is incorrect
-      throw new Error("Invalid email or password");
-    }
-  }
-);
-
 export const getAllAccount = createAsyncThunk(
   "auth/getAllAccount",
-  async (_) => {
+  async (status: string) => {
     let queryApi: Query<DocumentData> = collection(database, collectionAuth);
 
-    // if (active) {
-    //   queryApi = query(queryApi, where("activeStatus", "==", active));
-    // }
+    if (status) {
+      queryApi = query(queryApi, where("status", "==", status));
+    }
 
     const response = await getDocs(queryApi);
     const data = response.docs.map<IAccount>((doc, index) => ({
@@ -269,16 +255,26 @@ export const updateAccount = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    resetForgot(state, action: PayloadAction<string>) {},
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(getAllAccount.fulfilled, (state, action) => {
         state.dataListAccount = [...action.payload];
       })
+      .addCase(forGotPassword.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(forGotPassword.rejected, (state, action) => {
+        state.loading = false;
+      })
       .addCase(forGotPassword.fulfilled, (state, action) => {
+        state.dataAccountResetPassword = { ...action.payload };
         state.loadingResetPassword = true;
+        state.loading = false;
+      })
+      .addCase(updateAccountPassword.fulfilled, (state, action) => {
+        state.loadingResetPassword = true;
+        state.loading = false;
       })
       .addCase(updateAccountImage.fulfilled, (state, action) => {
         localStorage.setItem("token", JSON.stringify(action.payload));

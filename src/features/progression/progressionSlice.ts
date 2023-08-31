@@ -9,6 +9,7 @@ import {
 import {
   changeDate,
   changeTime,
+  convertToTimestamp,
   getStartAndEndOfWeekInMonth,
   getWeekDates,
   splitDate,
@@ -29,6 +30,7 @@ import {
   DocumentData,
   Query,
   Timestamp,
+  addDoc,
   collection,
   getDocs,
   limit,
@@ -47,7 +49,15 @@ const initialState: InitialStateProgression = {
 
 export const getAllProgression = createAsyncThunk(
   "progression/getAllProgression",
-  async (progresion: IProgression) => {
+  async ({
+    from,
+    to,
+    progresion,
+  }: {
+    from?: string;
+    to?: string;
+    progresion: IProgression;
+  }) => {
     let queryApi: Query<DocumentData> = collection(
       database,
       collectionProgression
@@ -66,8 +76,32 @@ export const getAllProgression = createAsyncThunk(
       queryApi = query(queryApi, where("powerSupply", "==", powerSupply));
     }
 
+    if (from && to) {
+      const startTimestamp = Timestamp.fromMillis(
+        moment(from, "DD/MM/YYYY").startOf("day").valueOf()
+      );
+      const endTimestamp = Timestamp.fromMillis(
+        moment(to, "DD/MM/YYYY").endOf("day").valueOf()
+      );
+
+      queryApi = query(
+        queryApi,
+        where("grantTime", ">=", startTimestamp),
+        where("grantTime", "<=", endTimestamp)
+      );
+    }
+
     const response = await getDocs(queryApi);
-    const data = response.docs.map<IProgression>((doc, index) => ({
+    const sortData = response.docs.sort((a, b) => {
+      const idA = parseInt(
+        (a.data().ID ?? "0").slice(-(a.data().ID.length + 1))
+      );
+      const idB = parseInt(
+        (b.data().ID ?? "0").slice(-(b.data().ID.length + 1))
+      );
+      return idA - idB;
+    });
+    const data = sortData.map<IProgression>((doc, index) => ({
       key: index + 1,
       stt: doc.data().ID,
       nameCustomer: doc.data().nameCustomer,
@@ -82,6 +116,76 @@ export const getAllProgression = createAsyncThunk(
       detail: doc.data().ID,
     }));
     return data;
+  }
+);
+
+export const addNewProgression = createAsyncThunk(
+  "progression/addNewProgression",
+  async ({
+    service,
+    serviceId,
+    currentTime,
+  }: {
+    service: string;
+    serviceId: string;
+    currentTime: string;
+  }) => {
+    const querySnapshot = await getDocs(
+      collection(database, collectionProgression)
+    );
+    const docRef = querySnapshot.docs.map((doc) => {
+      return doc.data().ID;
+    });
+    const findById = docRef.filter((item) => item.includes(serviceId));
+
+    const sortRef = findById.sort();
+    const maxId = Math.max(
+      ...sortRef.map((item) => parseInt(item.slice(-serviceId.length)))
+    );
+
+    const powerSupply: string[] = ["Kiosk", "Hệ thống"];
+    const randomPowerSupply = Math.floor(
+      Math.random() * (powerSupply.length + 1)
+    );
+    const status: string[] = ["Đã sử dụng", "Đang chờ", "Bỏ qua"];
+    const randomStatus = Math.floor(Math.random() * (status.length + 1));
+    const nameCustomer: string[] = [
+      "Lê Huỳnh Ái Vân",
+      "Huỳnh Ái Vân",
+      "Lê Ái Vân",
+      "Nguyễn Ái Vân",
+      "Lê Huỳnh Nghĩa",
+      "Lê Huỳnh Đức",
+      "Phạm Văn Mạnh",
+      "Lê Thị Cẩm Tiên",
+    ];
+    const randomNameCustomer = Math.floor(
+      Math.random() * (nameCustomer.length + 1)
+    );
+    const newEquipment = {
+      emailCustomer: "minhnhat@gmail.com",
+      ID:
+        findById.length === 0
+          ? `${serviceId}0001`
+          : `${serviceId}${(maxId + 1)
+              .toString()
+              .padStart(serviceId.length + 1, "0")}`,
+      nameService: service,
+      phoneCustomer: "038212385",
+      powerSupply: powerSupply[randomPowerSupply],
+      status: status[randomStatus],
+      nameCustomer: nameCustomer[randomNameCustomer],
+      expiry: convertToTimestamp(currentTime),
+      grantTime: convertToTimestamp(currentTime),
+    };
+    console.log(newEquipment);
+
+    try {
+      const collectionRef = collection(database, collectionProgression);
+      await addDoc(collectionRef, newEquipment);
+    } catch (error) {
+      throw error;
+    }
   }
 );
 
@@ -104,25 +208,33 @@ export const getAllProgressionOfService = createAsyncThunk(
       nameService: doc.data().nameService,
       status: doc.data().status,
     }));
+    data.sort();
     return data;
   }
 );
 
 export const getAllReport = createAsyncThunk(
   "progression/getAllReport",
-  async (_) => {
+  async ({ from, to }: { from: string; to: string }) => {
     let queryApi: Query<DocumentData> = collection(
       database,
       collectionProgression
     );
 
-    // if (active) {
-    //   queryApi = query(queryApi, where("activeStatus", "==", active));
-    // }
+    if (from && to) {
+      const startTimestamp = Timestamp.fromMillis(
+        moment(from, "DD/MM/YYYY").startOf("day").valueOf()
+      );
+      const endTimestamp = Timestamp.fromMillis(
+        moment(to, "DD/MM/YYYY").endOf("day").valueOf()
+      );
 
-    // if (connect) {
-    //   queryApi = query(queryApi, where("connectStatus", "==", connect));
-    // }
+      queryApi = query(
+        queryApi,
+        where("grantTime", ">=", startTimestamp),
+        where("grantTime", "<=", endTimestamp)
+      );
+    }
 
     const response = await getDocs(queryApi);
     const data = response.docs.map<IProgression>((doc, index) => ({

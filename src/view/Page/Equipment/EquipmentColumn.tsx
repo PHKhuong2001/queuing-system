@@ -7,58 +7,58 @@ export const collectionEquipment = "equipment";
 export const dataListEquipment: IEquipment[] = [];
 export const dataEquipmentDetail: IEquipment = {
   key: 0,
-  maThietBi: "",
-  tenThietBi: "",
-  diaChiIP: "",
-  trangThaiHoatDong: "",
-  trangThaiKetNoi: "",
-  dichVuSuDung: "",
-  chiTiet: "",
-  capNhat: "",
+  ID: "",
+  name: "",
+  IP: "",
+  activeStatus: "",
+  connectStatus: "",
+  service: "",
+  detail: "",
+  update: "",
 };
 
 export const dataEquipmentUpdate: IEquipment = {
   key: 0,
-  maThietBi: "",
-  tenThietBi: "",
-  diaChiIP: "",
-  trangThaiHoatDong: "",
-  trangThaiKetNoi: "",
-  dichVuSuDung: "",
-  chiTiet: "",
-  capNhat: "",
+  ID: "",
+  name: "",
+  IP: "",
+  activeStatus: "",
+  connectStatus: "",
+  service: "",
+  detail: "",
+  update: "",
 };
 
 export const columnsOffEquipment = [
-  { title: "Mã thiết bị", dataIndex: "maThietBi", key: "maThietBi" },
-  { title: "Tên thiết bị", dataIndex: "tenThietBi", key: "tenThietBi" },
-  { title: "Địa chỉ IP", dataIndex: "diaChiIP", key: "diaChiIP" },
+  { title: "Mã thiết bị", dataIndex: "ID", key: "ID" },
+  { title: "Tên thiết bị", dataIndex: "name", key: "name" },
+  { title: "Địa chỉ IP", dataIndex: "IP", key: "IP" },
   {
     title: "Trạng thái hoạt động",
-    dataIndex: "trangThaiHoatDong",
-    key: "trangThaiHoatDong",
+    dataIndex: "activeStatus",
+    key: "activeStatus",
   },
   {
     title: "Trạng thái kết nối",
-    dataIndex: "trangThaiKetNoi",
-    key: "trangThaiKetNoi",
+    dataIndex: "connectStatus",
+    key: "connectStatus",
   },
   {
     title: "Dịch vụ sử dụng",
-    dataIndex: "dichVuSuDung",
-    key: "dichVuSuDung",
+    dataIndex: "service",
+    key: "service",
     render: (text: string) => <ExpandableText text={text} />,
   },
   {
     title: "  ",
-    dataIndex: "chiTiet",
-    key: "chiTiet",
+    dataIndex: "detail",
+    key: "detail",
     render: (text: string) => <EquipmentLink text={text} linkType="detail" />,
   },
   {
     title: "  ",
-    dataIndex: "capNhat",
-    key: "capNhat",
+    dataIndex: "update",
+    key: "update",
     render: (text: string) => <EquipmentLink text={text} linkType="update" />,
   },
 ];
@@ -107,6 +107,7 @@ const EquipmentLink: React.FC<EquipmentLinkProps> = ({ text, linkType }) => {
 };
 
 export function useExpandText(initialText: string, threshold: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [text, setText] = useState(initialText);
   const [isExpanded, setIsExpanded] = useState(false);
 

@@ -2,10 +2,12 @@ import {
   convertToTimestamp,
   getCurrentDate,
   getCurrentTime,
+  getLocalStorageUser,
 } from "@/Shared/helpers";
 import { IService } from "@/Shared/interfaces/ServiceInterface";
 import { useAppDispatch } from "@/app/hooks";
 import routesConfig from "@/config/routes";
+import { addNewActivity } from "@/features/activity/activitySlice";
 import { addNewService } from "@/features/serviceSlice/serviceSlice";
 import { Header } from "@/layouts";
 import { Button, Col, Form, Input, Row, Typography } from "antd";
@@ -34,6 +36,8 @@ function ServiceCreate() {
   const [formValue, setFormCreateValue] = useState<IService>(formCreate);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const user = getLocalStorageUser();
+
   const currentDate = getCurrentDate();
 
   const handlerSubmitCreate = () => {
@@ -49,6 +53,15 @@ function ServiceCreate() {
           ...formValue,
           createdAt: `${currentDate} ${getCurrentTime()}`,
           activeStatus: "Hoạt động",
+        })
+      );
+      dispatch(
+        addNewActivity({
+          account: user.account,
+          executionTime: convertToTimestamp(
+            `${getCurrentDate()} ${getCurrentTime()}`
+          ),
+          operations: `Thêm dịch vụ mới ${formValue.name}`,
         })
       );
       navigate(routesConfig.service);

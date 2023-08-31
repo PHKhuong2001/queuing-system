@@ -30,7 +30,7 @@ function Dashboard() {
   const [selectTime, setSelectTime] = useState("Ngày");
   const { Text, Title } = Typography;
   useEffect(() => {
-    dispatch(getAllProgression({}));
+    dispatch(getAllProgression({ progresion: {} }));
     if (selectTime === "Ngày") {
       dispatch(getWeeklyData({ dateString: "11/08/2023" }));
     } else if (selectTime === "Tháng") {

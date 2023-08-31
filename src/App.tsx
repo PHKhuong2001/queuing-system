@@ -56,16 +56,15 @@ function App() {
                 />
               );
             })}
-          {
-            <Route
-              element={
-                <LayoutLogin>
-                  <ResetPassword />
-                </LayoutLogin>
-              }
-              path={routesConfig.changePassword}
-            />
-          }
+
+          <Route
+            element={
+              <LayoutLogin>
+                <ResetPassword />
+              </LayoutLogin>
+            }
+            path={routesConfig.changePassword}
+          />
         </Routes>
       </Router>
     </>

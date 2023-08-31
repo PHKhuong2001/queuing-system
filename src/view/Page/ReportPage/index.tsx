@@ -6,16 +6,17 @@ import routesConfig from "@/config/routes";
 import { getAllReport } from "@/features/progression/progressionSlice";
 import { Header } from "@/layouts";
 import { Col, DatePicker, Row, Typography } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 function ReportPage() {
   const dataReport = useSelector(
     (state: RootState) => state.progression.dataListReport
   );
   const dispatch = useAppDispatch();
+  const [fromTo, setFromTo] = useState({ from: "", to: "" });
   useEffect(() => {
-    dispatch(getAllReport());
-  }, [dispatch]);
+    dispatch(getAllReport({ ...fromTo }));
+  }, [dispatch, fromTo]);
   const { Text } = Typography;
   return (
     <Col span={24} style={{ height: "100%" }}>
@@ -53,14 +54,20 @@ function ReportPage() {
             <Col span={10}>
               <DatePicker
                 style={{ width: "100%", height: 38 }}
-                // onChange={handleChangeSelectStatus}
+                onChange={(date: any, dateString: string) =>
+                  setFromTo((prev) => ({ ...prev, from: dateString }))
+                }
+                format="DD/MM/YYYY"
               />
             </Col>
             <ArrowIcon />
             <Col span={10}>
               <DatePicker
                 style={{ width: "100%", height: 38 }}
-                // onChange={handleChangeSelectStatus}
+                onChange={(date: any, dateString: string) =>
+                  setFromTo((prev) => ({ ...prev, to: dateString }))
+                }
+                format="DD/MM/YYYY"
               />
             </Col>
           </Row>

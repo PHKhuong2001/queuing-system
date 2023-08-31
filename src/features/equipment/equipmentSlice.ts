@@ -51,14 +51,14 @@ export const getAllEquipment = createAsyncThunk(
     const response = await getDocs(queryApi);
     const data = response.docs.map<IEquipment>((doc, index) => ({
       key: index + 1,
-      maThietBi: doc.data().ID,
-      tenThietBi: doc.data().name,
-      diaChiIP: doc.data().IP,
-      trangThaiHoatDong: doc.data().activeStatus,
-      trangThaiKetNoi: doc.data().connectStatus,
-      dichVuSuDung: doc.data().service,
-      chiTiet: doc.data().ID,
-      capNhat: doc.data().ID,
+      ID: doc.data().ID,
+      name: doc.data().name,
+      IP: doc.data().IP,
+      activeStatus: doc.data().activeStatus,
+      connectStatus: doc.data().connectStatus,
+      service: doc.data().service,
+      detail: doc.data().ID,
+      update: doc.data().ID,
     }));
     return data;
   }
@@ -81,13 +81,13 @@ export const findEquipment = createAsyncThunk(
     const doc = querySnapshot.docs[0];
     const data = doc.data();
     const result: IEquipment = {
-      maThietBi: data.ID,
-      loaiThietBi: data.type,
-      tenThietBi: data.name,
-      dangNhap: data.signIn,
+      ID: data.ID,
+      type: data.type,
+      name: data.name,
+      signIn: data.signIn,
       ip: data.IP,
       password: data.password,
-      dichVuSuDung: data.service,
+      service: data.service,
     };
     return result;
   }
@@ -110,13 +110,13 @@ export const findEquipmentUpdate = createAsyncThunk(
     const doc = querySnapshot.docs[0];
     const data = doc.data();
     const result: IEquipment = {
-      maThietBi: data.ID,
-      loaiThietBi: data.type,
-      tenThietBi: data.name,
-      dangNhap: data.signIn,
+      ID: data.ID,
+      type: data.type,
+      name: data.name,
+      signIn: data.signIn,
       ip: data.IP,
       password: data.password,
-      dichVuSuDung: data.service,
+      service: data.service,
     };
     return result;
   }
@@ -131,17 +131,16 @@ export const addNewEquipment = createAsyncThunk(
     const randomActive = Math.floor(Math.random() * (active.length + 1));
     console.log(equiment);
     const newEquipment = {
-      ID: equiment.maThietBi,
-      type: equiment.loaiThietBi,
-      name: equiment.tenThietBi,
-      signIn: equiment.dangNhap,
+      ID: equiment.ID,
+      type: equiment.type,
+      name: equiment.name,
+      signIn: equiment.signIn,
       IP: equiment.ip,
       password: equiment.password,
-      service: equiment.dichVuSuDung,
+      service: equiment.service,
       connectStatus: connect[randomConnect],
       activeStatus: active[randomActive],
     };
-    console.log(newEquipment);
 
     try {
       const collectionRef = collection(database, collectionEquipment);
@@ -173,13 +172,13 @@ export const updateEquipment = createAsyncThunk(
 
     if (docRef) {
       await updateDoc(docRef.ref, {
-        ID: equiment.maThietBi,
-        type: equiment.loaiThietBi,
-        name: equiment.tenThietBi,
-        signIn: equiment.dangNhap,
+        ID: equiment.ID,
+        type: equiment.type,
+        name: equiment.name,
+        signIn: equiment.signIn,
         IP: equiment.ip,
         password: equiment.password,
-        service: equiment.dichVuSuDung,
+        service: equiment.service,
       });
     }
   }

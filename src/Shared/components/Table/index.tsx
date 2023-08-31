@@ -23,7 +23,7 @@ interface TableProps {
 
 const TableComponent = ({ data, height = "400px", width }: TableProps) => {
   const [pageSize, setPageSize] = useState<any>(
-    parseInt(pageSizeOptions[1], 10)
+    parseInt(pageSizeOptions[3], 10)
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [currentData, setCurrentData] = useState<any[]>([]);

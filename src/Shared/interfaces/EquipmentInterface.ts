@@ -1,5 +1,3 @@
-import { AsyncThunk } from "@reduxjs/toolkit";
-
 export interface DataEquimentState {
   data: IEquipment[];
   equipmentDetail: IEquipment;
@@ -8,16 +6,16 @@ export interface DataEquimentState {
 
 export interface IEquipment {
   key?: number;
-  maThietBi?: string;
-  tenThietBi?: string;
-  diaChiIP?: string;
-  trangThaiHoatDong?: string;
-  trangThaiKetNoi?: string;
-  dichVuSuDung?: string;
-  chiTiet?: string;
-  capNhat?: string;
-  loaiThietBi?: string;
+  ID?: string;
+  name?: string;
+  IP?: string;
+  activeStatus?: string;
+  connectStatus?: string;
+  service?: string;
+  detail?: string;
+  update?: string;
+  type?: string;
   ip?: string;
-  dangNhap?: string;
+  signIn?: string;
   password?: string;
 }

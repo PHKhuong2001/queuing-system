@@ -26,19 +26,18 @@ function ProgressionPage() {
     status: "",
     powerSupply: "",
   });
+  const [fromTo, setFromTo] = useState({ from: "", to: "" });
   useEffect(() => {
-    dispatch(getAllProgression(progresionFilter));
+    dispatch(getAllProgression({ progresion: progresionFilter, ...fromTo }));
     dispatch(getAllService({}));
     dispatch(getAllEquipment({ active: "", connect: "" }));
     console.log(progresionFilter, "re-render");
-  }, [dispatch, progresionFilter]);
+  }, [dispatch, progresionFilter, fromTo]);
   const listDropdownService = dataService.map((item) => {
     return { value: item.name, label: item.name };
   });
   // Sử dụng Set để loại bỏ các giá trị trùng lặp
-  const uniqueEquipmentNames = new Set(
-    dataEquipment.map((item) => item.tenThietBi)
-  );
+  const uniqueEquipmentNames = new Set(dataEquipment.map((item) => item.name));
 
   // Chuyển Set thành mảng và tạo danh sách cho dropdown
   const listDropdownEquipment = Array.from(uniqueEquipmentNames).map(
@@ -157,14 +156,20 @@ function ProgressionPage() {
             <Col span={10}>
               <DatePicker
                 style={{ width: "100%", height: 38 }}
-                // onChange={handleChangeSelectStatus}
+                onChange={(date: any, dateString: string) =>
+                  setFromTo((prev) => ({ ...prev, from: dateString }))
+                }
+                format="DD/MM/YYYY"
               />
             </Col>
             <ArrowIcon />
             <Col span={10}>
               <DatePicker
                 style={{ width: "100%", height: 38 }}
-                // onChange={handleChangeSelectStatus}
+                onChange={(date: any, dateString: string) =>
+                  setFromTo((prev) => ({ ...prev, to: dateString }))
+                }
+                format="DD/MM/YYYY"
               />
             </Col>
           </Row>

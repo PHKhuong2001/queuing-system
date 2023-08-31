@@ -4,7 +4,6 @@ import { Button, Col, Modal, Row, Typography } from "antd";
 const ModalAddProgression: React.FC = () => {
   const { Title, Text } = Typography;
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -19,7 +18,7 @@ const ModalAddProgression: React.FC = () => {
 
   return (
     <>
-      <Button className="button-continue" onClick={showModal}>
+      <Button className="button-continue" htmlType="submit" onClick={showModal}>
         In số
       </Button>
       <Modal

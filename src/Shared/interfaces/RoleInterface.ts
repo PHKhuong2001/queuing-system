@@ -9,4 +9,5 @@ export interface IRole {
 export interface InitialStateRole {
   dataListRole: IRole[];
   dataDetailRole: IRole;
+  roleUpdate: IRole;
 }

@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
+import { IAccount } from "../interfaces/AccountInterface";
 
 export const handlerSplitRoute = (routeString: string) => {
   let route = "";
@@ -53,17 +54,6 @@ export const splitDate = (date: String) => {
   const [day, month, year] = date.split("/").map(Number);
 
   return { day, month, year };
-};
-
-export const getCurrentDate = () => {
-  const today = new Date();
-
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1).padStart(2, "0"); // Lưu ý: Tháng trong JavaScript bắt đầu từ 0 (tháng 0 là tháng 1)
-  const year = today.getFullYear();
-
-  const currentDate = `${day}/${month}/${year}`;
-  return currentDate;
 };
 
 export const getWeekDates = (year: number, month: number, day: number) => {
@@ -126,4 +116,19 @@ export const getCurrentTime = () => {
   const minutes = now.getMinutes().toString().padStart(2, "0");
   const seconds = now.getSeconds().toString().padStart(2, "0");
   return `${hours}:${minutes}:${seconds}`;
+};
+export const getCurrentDate = () => {
+  const today = new Date();
+
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0"); // Lưu ý: Tháng trong JavaScript bắt đầu từ 0 (tháng 0 là tháng 1)
+  const year = today.getFullYear();
+
+  const currentDate = `${day}/${month}/${year}`;
+  return currentDate;
+};
+export const getLocalStorageUser = () => {
+  const user = localStorage.getItem("token");
+  const data: IAccount = JSON.parse(user || "");
+  return data;
 };

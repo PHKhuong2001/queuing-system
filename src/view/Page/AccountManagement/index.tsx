@@ -6,7 +6,7 @@ import routesConfig from "@/config/routes";
 import { getAllAccount } from "@/features/auth/authSlice";
 import { Header } from "@/layouts";
 import { Col, Input, Row, Select, Typography } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 function AccountManagementPage() {
   const listAccount = useSelector(
@@ -14,10 +14,10 @@ function AccountManagementPage() {
   );
   const dispatch = useAppDispatch();
   const { Text, Title } = Typography;
-
+  const [status, setStatus] = useState("");
   useEffect(() => {
-    dispatch(getAllAccount());
-  }, [dispatch]);
+    dispatch(getAllAccount(status === "Tất cả" ? "" : status));
+  }, [dispatch, status]);
   return (
     <Col span={24} style={{ height: "100%" }}>
       <Row>
@@ -48,7 +48,7 @@ function AccountManagementPage() {
             style={{ width: "90%" }}
             className="equipment-select"
             suffixIcon={<DropdownIcon />}
-            // onChange={handlerSelectActive}
+            onChange={(e) => setStatus(e)}
             options={[
               { value: "Tất cả", label: "Tất cả" },
               { value: "Hoạt động", label: "Hoạt động" },

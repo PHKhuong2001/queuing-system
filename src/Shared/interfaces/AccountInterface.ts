@@ -14,6 +14,7 @@ export interface InitialStateAuth {
   dataListAccount: IAccount[];
   dataAccountDetail: IAccount;
   dataAccountUpdate: IAccount;
+  dataAccountResetPassword: IAccount;
   loading: boolean;
   success: boolean;
   loginValid: {

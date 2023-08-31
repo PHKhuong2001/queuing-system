@@ -61,7 +61,7 @@ function EquipmentDetail() {
                 className="equipment-input-label"
                 style={{ fontSize: "0.9rem", fontWeight: "400" }}
               >
-                {equipment.maThietBi}
+                {equipment.ID}
               </Text>
             </Col>
           </Col>
@@ -84,7 +84,7 @@ function EquipmentDetail() {
                 className="equipment-input-label"
                 style={{ fontSize: "0.9rem", fontWeight: "400" }}
               >
-                {equipment.loaiThietBi}
+                {equipment.type}
               </Text>
             </Col>
           </Col>
@@ -114,7 +114,7 @@ function EquipmentDetail() {
                 className="equipment-input-label"
                 style={{ fontSize: "0.9rem", fontWeight: "400" }}
               >
-                {equipment.tenThietBi}
+                {equipment.name}
               </Text>
             </Col>
           </Col>
@@ -136,7 +136,7 @@ function EquipmentDetail() {
                 className="equipment-input-label"
                 style={{ fontSize: "0.9rem", fontWeight: "400" }}
               >
-                {equipment.dangNhap}
+                {equipment.signIn}
               </Text>
             </Col>
           </Col>
@@ -211,7 +211,7 @@ function EquipmentDetail() {
               className="equipment-input-label"
               style={{ fontSize: "0.9rem", fontWeight: "400" }}
             >
-              {equipment.dichVuSuDung}
+              {equipment.service}
             </Text>
           </Col>
         </Row>
@@ -219,7 +219,7 @@ function EquipmentDetail() {
       <AddButtonCustom
         nameAdd="Cập nhật thiết bị"
         style={{ right: "-86px" }}
-        href={`${route}/${equipment.maThietBi}`}
+        href={`${route}/${equipment.ID}`}
       />
     </Row>
   );

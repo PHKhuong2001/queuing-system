@@ -3,22 +3,27 @@ import { useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import routesConfig from "@/config/routes";
 import { forGotPassword } from "@/features/auth/authSlice";
-import { Col, Form, Image, Typography, Row, Input, Button } from "antd";
+import { Col, Form, Image, Typography, Row, Input, Button, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function ForgotPassword() {
   const loadingResetPassword = useSelector(
     (state: RootState) => state.auth.loadingResetPassword
   );
+  const loading = useSelector((state: RootState) => state.auth.loading);
+
   const { Text, Title } = Typography;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  console.log();
+
   useEffect(() => {
     if (loadingResetPassword) {
-      navigate(routesConfig.login);
+      navigate(routesConfig.changePassword);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,8 +102,7 @@ function ForgotPassword() {
                   height: "2.4rem",
                   width: "8.2rem",
                 }}
-                type="link"
-                href={routesConfig.changePassword}
+                htmlType="submit"
               >
                 Tiếp tục
               </Button>
@@ -106,6 +110,26 @@ function ForgotPassword() {
           </Form>
         </Col>
       </Row>
+      {loading ? (
+        <Col
+          span={24}
+          style={{
+            zIndex: 9,
+            width: "100%",
+            height: "100%",
+            left: 0,
+            top: 0,
+          }}
+          className="position-absolute d-flex"
+        >
+          <Spin
+            indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />}
+            style={{ zIndex: 10, margin: "auto" }}
+          />
+        </Col>
+      ) : (
+        <></>
+      )}
     </Col>
   );
 }

@@ -1,6 +1,13 @@
+import {
+  convertToTimestamp,
+  getCurrentDate,
+  getCurrentTime,
+  getLocalStorageUser,
+} from "@/Shared/helpers";
 import { IEquipment } from "@/Shared/interfaces/EquipmentInterface";
 import { useAppDispatch } from "@/app/hooks";
 import routesConfig from "@/config/routes";
+import { addNewActivity } from "@/features/activity/activitySlice";
 import { addNewEquipment } from "@/features/equipment/equipmentSlice";
 import { Button, Col, Form, Input, Row, Select, Typography } from "antd";
 import { useState } from "react";
@@ -13,31 +20,41 @@ export const status = [
 ];
 
 const formCreate: IEquipment = {
-  maThietBi: "",
-  loaiThietBi: "",
-  tenThietBi: "",
-  dangNhap: "",
+  ID: "",
+  type: "",
+  name: "",
+  signIn: "",
   ip: "",
   password: "",
-  dichVuSuDung: "",
+  service: "",
 };
 
 function EquipmentCreate() {
   const { Title, Text } = Typography;
   const dispatch = useAppDispatch();
+  const user = getLocalStorageUser();
   const navigate = useNavigate();
   const [formValue, setFormCreateValue] = useState<IEquipment>(formCreate);
   const handlerSubmitCreate = () => {
     if (
-      formValue.maThietBi &&
-      formValue.loaiThietBi &&
-      formValue.tenThietBi &&
-      formValue.dangNhap &&
+      formValue.ID &&
+      formValue.type &&
+      formValue.name &&
+      formValue.signIn &&
       formValue.ip &&
       formValue.password &&
-      formValue.dichVuSuDung
+      formValue.service
     ) {
       dispatch(addNewEquipment(formValue));
+      dispatch(
+        addNewActivity({
+          account: user.account,
+          executionTime: convertToTimestamp(
+            `${getCurrentDate()} ${getCurrentTime()}`
+          ),
+          operations: `Tạo mới thiết bị ${formValue.ID}`,
+        })
+      );
       setFormCreateValue(formCreate);
       navigate(routesConfig.equipment);
     }
@@ -64,11 +81,11 @@ function EquipmentCreate() {
               <Input
                 style={{ width: "95%", height: 38 }}
                 placeholder="Nhập mã thiết bị"
-                value={formValue.maThietBi}
+                value={formValue.ID}
                 onChange={(e) =>
                   setFormCreateValue((prev) => ({
                     ...prev,
-                    maThietBi: e.target.value,
+                    ID: e.target.value,
                   }))
                 }
               />
@@ -83,11 +100,11 @@ function EquipmentCreate() {
                   { value: "Kiosk", label: "Kiosk" },
                   { value: "Display counter", label: "Display counter" },
                 ]}
-                value={formValue.loaiThietBi}
+                value={formValue.type}
                 onChange={(e) =>
                   setFormCreateValue((prev) => ({
                     ...prev,
-                    loaiThietBi: e,
+                    type: e,
                   }))
                 }
               />
@@ -105,11 +122,11 @@ function EquipmentCreate() {
               <Input
                 style={{ width: "95%", height: 38 }}
                 placeholder="Nhập tên thiết bị"
-                value={formValue.tenThietBi}
+                value={formValue.name}
                 onChange={(e) =>
                   setFormCreateValue((prev) => ({
                     ...prev,
-                    tenThietBi: e.target.value,
+                    name: e.target.value,
                   }))
                 }
               />
@@ -122,7 +139,7 @@ function EquipmentCreate() {
                 onChange={(e) =>
                   setFormCreateValue((prev) => ({
                     ...prev,
-                    dangNhap: e.target.value,
+                    signIn: e.target.value,
                   }))
                 }
               />
@@ -176,11 +193,11 @@ function EquipmentCreate() {
               <Input
                 style={{ width: "97.6%", height: 38 }}
                 placeholder="Nhập mã thiết bị"
-                value={formValue.dichVuSuDung}
+                value={formValue.service}
                 onChange={(e) =>
                   setFormCreateValue((prev) => ({
                     ...prev,
-                    dichVuSuDung: e.target.value,
+                    service: e.target.value,
                   }))
                 }
               />
